@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/favicon.ico">
+    <script src="script.js" defer></script>
+    <title>Paardhiv Sarakam</title>
+  </head>
+  <body>
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark py-2 position-sticky nav-custom">
+        <div class="container-fluid">
+            <img class="mx-3 float-start img-fluid" src="images/favicon.ico" alt="logo">
+            <button onclick="buttonr()" type="button" class="btn btn-outline-warning ms-auto mx-3">Resume</button>
+        </div>
+    </div>
+    <div class="container">
+        <h1 class="display-1 fw-bold text-light custom text-center">Hello, I'm <span id="change">Paardhiv</span></h1>
+    </div>
+    <div class="container">
+        <h3 class="text-light display-5 text-center">An ECE undergraduate at Manipal Institute of Technology. Check out my <a href="#skills" class="hover-underline-animation">skills</a>, <a href="#experience" class="hover-underline-animation">experience</a>, <a href="#projects" class="hover-underline-animation">projects</a> and <a href="#extras" class="hover-underline-animation">extra-curriculars</a>.</h3>
+    </div>
+    <div class="container d-sm-flex justify-content-center p-5">
+        <button onclick="buttonl()" type="button" class="btn cbtn btn-outline-primary mx-3"><i class="fa-brands fa-linkedin"></i> | LinkedIn</button>
+        <button onclick="buttong()" type="button" class="btn cbtn btn-outline-secondary mx-3"><i class="fa-brands fa-github"></i> | GitHub</button>
+        <button onclick="buttont()"  type="button" class="btn cbtn btn-outline-info mx-3"><i class="fa-brands fa-twitter"></i> | Twitter</button>
+        <button onclick="buttoni()" typr="button" class="btn cbtn btn-outline-danger mx-3"><i class="fa-brands fa-instagram"></i> | Instagram</button>
+    </div>
+    <section id="skills">
+        <h3 class="fw-bold hc text-center display-3 custom_exp p-5">Skills</h3>
+        <div class="container">
+            <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <img class="img-d p-3 img-fluid" src="images/html-1.svg" alt=""> 
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <img class="img-d p-3 img-fluid" src="images/css-3.svg" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <img class="img-d p-3 img-fluid" src="images/logo-javascript.svg" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <img class="img-d p-3 img-fluid" src="images/bootstrap-5-1.svg" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <img class="img-d p-3 img-fluid" src="images/java (1).svg" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <img class="img-d p-3 img-fluid" src="images/python-4.svg" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <img class="img-d p-3 img-fluid" src="images/jquery-4.svg" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <img class="img-d p-3 img-fluid" src="images/linux-tux.svg" alt="">
+                    </div>
+            </div>
+        </div>
+    </section>
+    <section id="experience">
+        <div class="container">
+            <h3 class="fw-bold  text-center hc display-3 custom_exp p-5">Experience</h3>
+            <p class="text-light lh-lg p-font text-center"><span id="com-colour">Fluentgrid</span>   - June'22-July'22 - Summer Intern</p>
+            <p class="text-light lh-lg p-font text-center"><span id="com-colour">ISA Manipal</span> - February'22-Present - Web development Trainee</p>
+            <p class="text-light lh-lg p-font text-center"><span id="com-colour">E-cell MIT</span> - August'21-Present - Startup development Executive</p>
+            <p class="text-light lg-lg p-font text-center"><span id="com-colour">Glue Labs</span> - December'21-March'22 - Community and content management</p>
+            <p class="text-light lh-lg p-font text-center"><span id="com-colour">KidEx Venture</span> - July'21-October'21 -Rubik's Cube Instructor</p>
+        </div>
+    </section>
+    <section id="projects">
+        <div class="container">
+            <h3 class="fw-bold hc text-center display-3 custom_proj p-5">Projects</h3>
+            <div class="card-group my-3">
+                <div class="card bg-info mx-2">
+                  <img src="images/p1.png" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title text-center">Speedcubing Website</h5>
+                    <p class="card-text text-center">A website for all your speedcubing needs. Tech stack - HTML , CSS , BOOTSTRAP , JS</p>
+                  </div>
+                  <div class="card-footer text-center">
+                    <small onclick="project1()">Visit Site</small>
+                  </div>
+                </div>
+                <div class="card bg-info mx-2">
+                  <img src="images/p3.png" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title text-center">Portfolio Website</h5>
+                    <p class="card-text text-center">A portfolio website using HTML, CSS ,BOOTSTRAP and JS.</p>
+                  </div>
+                  <div class="card-footer text-center">
+                    <small onclick="project2()">Visit Site</small>
+                  </div>
+                </div>    
+            </div>
+        </div>
+    </section>
+    <section id="extras">
+        <div class="conatiner">
+            <h3 class="fw-bold hc text-center display-3 custom_ext p-5">Extra Curriculars</h3>
+            <p class="text-light lh-lg p-font text-center mx-5">I am a startup geek, a <span id="com-colour">world cube association competitor</span> and have worked for two edtech startups as a <span id="com-colour">speedcubing instructor</span> and have mentored over <span id="com-colour">50 students</span> across India, I am also a <span id="com-colour">crew member</span> of Blitzkrieg college dance club and love to have a chat about the new technologies, <span id="com-colour">startups </span>and the developments in the engineering sphere. </p>
+        </div>
+    </section>
+    <br>
+    <br>
+    <br>
+    <footer class="p-5 bg-dark text-light text-center position-relative">
+        <div class="container">
+            <p class="lead">Feel free to <a href="#">contact</a> me.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>

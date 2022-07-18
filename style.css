@@ -1,0 +1,65 @@
+body{
+    background-color:	#202020;
+}
+.nav-custom{
+    background-color: #202020;
+}
+.custom{
+    margin-top: 9%;
+}
+#change{
+    color: aqua;
+}
+@media (max-width: 600px){
+    .cbtn{
+        margin: 5%;
+    }
+}
+a{
+    color: aqua;
+    text-decoration: none;
+}
+.custom_exp{
+    margin-top: 15%;
+}
+.custom_proj{
+    margin-top: 20%;
+}
+.img-d{
+    height: 200px;
+    width: 100%;
+}
+.hover-underline-animation {
+    display: inline-block;
+    position: relative;
+    color: aqua;
+}
+  
+.hover-underline-animation:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: aqua;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+} 
+.hover-underline-animation:hover:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+.p-font{
+    font-size: 200%;
+}
+#com-colour{
+    color: aqua;
+}
+.hc{
+    color: #FFE9D0;
+}
+.custom_ext{
+    margin-top: 6%;
+}
