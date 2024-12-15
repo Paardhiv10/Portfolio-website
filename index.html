@@ -1,108 +1,318 @@
 <!doctype html>
 <html lang="en">
   <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Paardhiv Sarakam - SDE at GPI India. Experienced in product management and development. Explore skills, projects, and experience.">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="images/favicon.ico">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="script.js" defer></script>
-    <title>Paardhiv Sarakam</title>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <title>Paardhiv Sarakam's SDE & PM Portfolio </title>
   </head>
   <body>
-    <div class="navbar navbar-expand-lg bg-dark navbar-dark py-2 position-sticky nav-custom">
+   
+    <br>
+
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-dark mt-2 bg-dark fixed-top nav-custom">
         <div class="container-fluid">
-            <img class="mx-3 float-start img-fluid" src="images/favicon.ico" alt="logo">
-            <button onclick="buttonr()" type="button" class="btn btn-outline-warning ms-auto mx-3">Resume</button>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+              <li class="nav-item">
+                <a class="nav-link active" href="#skills">Skills</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#experience">Experience</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#projects">Projects</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#caseStudies">Case Studies</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#extras">Interests</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="https://drive.google.com/file/d/1VWMuY7QDoSCKp0LDHQN2LmGf3pWgVxSX/view">Resume</a>
+              </li>
+            </ul>
+          </div>
         </div>
+      </nav>
     </div>
-    <div class="container">
-        <h1 class="display-1 fw-bold text-light custom text-center">Hello, I'm <span id="change">Paardhiv</span></h1>
-    </div>
-    <div class="container">
-        <h3 class="text-light display-5 text-center">An ECE undergraduate at Manipal Institute of Technology. Check out my <a href="#skills" class="hover-underline-animation">skills</a>, <a href="#experience" class="hover-underline-animation">experience</a>, <a href="#projects" class="hover-underline-animation">projects</a> and <a href="#extras" class="hover-underline-animation">extra-curriculars</a>.</h3>
-    </div>
-    <div class="container d-sm-flex justify-content-center p-5">
-        <button onclick="buttonl()" type="button" class="btn cbtn btn-outline-primary mx-3"><i class="fa-brands fa-linkedin"></i> | LinkedIn</button>
-        <button onclick="buttong()" type="button" class="btn cbtn btn-outline-secondary mx-3"><i class="fa-brands fa-github"></i> | GitHub</button>
-        <button onclick="buttont()"  type="button" class="btn cbtn btn-outline-info mx-3"><i class="fa-brands fa-twitter"></i> | Twitter</button>
-        <button onclick="buttoni()" typr="button" class="btn cbtn btn-outline-danger mx-3"><i class="fa-brands fa-instagram"></i> | Instagram</button>
-    </div>
-    <section id="skills">
-        <h3 class="fw-bold hc text-center display-3 custom_exp p-5">Skills</h3>
-        <div class="container">
-            <div class="row g-4">
-                    <div class="col-md-6 col-lg-3">
-                        <img class="img-d p-3 img-fluid" src="images/html-1.svg" alt=""> 
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <img class="img-d p-3 img-fluid" src="images/css-3.svg" alt="">
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <img class="img-d p-3 img-fluid" src="images/logo-javascript.svg" alt="">
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <img class="img-d p-3 img-fluid" src="images/bootstrap-5-1.svg" alt="">
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <img class="img-d p-3 img-fluid" src="images/java (1).svg" alt="">
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <img class="img-d p-3 img-fluid" src="images/python-4.svg" alt="">
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <img class="img-d p-3 img-fluid" src="images/jquery-4.svg" alt="">
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <img class="img-d p-3 img-fluid" src="images/linux-tux.svg" alt="">
-                    </div>
+    
+    <div class="container cust-space">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md mt-lg-5 mx-4">
+                <h1 class="display-5 fw-bold text-light custom">Hello, I'm <span id="change">Paardhiv</span></h1>
+                <p class="text-light fs-5">I'm a software engineer with a knack for building exceptional products. I've worked with YC-backed and early-stage startups, gaining solid experience in product management. I'm passionate about using tech to solve real-world problems and creating products that are not just functional but thoughtfully crafted.</p>
+            </div>
+            <div class="col-md">
+                <div class="container-fluid">
+                    <img src="portfolio_pic.jpg" class="img-fluid img-cust" alt="Paardhiv Sarakam - Portfolio Picture">
+                </div>
             </div>
         </div>
-    </section>
-    <section id="experience">
-        <div class="container">
-            <h3 class="fw-bold  text-center hc display-3 custom_exp p-5">Experience</h3>
-            <p class="text-light lh-lg p-font text-center"><span id="com-colour">Fluentgrid</span>   - June'22-July'22 - Summer Intern</p>
-            <p class="text-light lh-lg p-font text-center"><span id="com-colour">ISA Manipal</span> - February'22-Present - Web development Trainee</p>
-            <p class="text-light lh-lg p-font text-center"><span id="com-colour">E-cell MIT</span> - August'21-Present - Startup development Executive</p>
-            <p class="text-light lg-lg p-font text-center"><span id="com-colour">Glue Labs</span> - December'21-March'22 - Community and content management</p>
-            <p class="text-light lh-lg p-font text-center"><span id="com-colour">KidEx Venture</span> - July'21-October'21 -Rubik's Cube Instructor</p>
-        </div>
-    </section>
-    <section id="projects">
-        <div class="container">
-            <h3 class="fw-bold hc text-center display-3 custom_proj p-5">Projects</h3>
-            <div class="card-group my-3">
-                <div class="card bg-info mx-2">
-                  <img src="images/p1.png" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title text-center">Speedcubing Website</h5>
-                    <p class="card-text text-center">A website for all your speedcubing needs. Tech stack - HTML , CSS , BOOTSTRAP , JS</p>
+    </div>
+
+    <section id="skills" class="p-2">
+        <h2 class="fw-bold hc text-center display-3 custom_exp p-5 mt-lg-5">Skills</h2>
+        <div class="container" data-aos="fade-down">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md mx-4">
+              <img src="exp2.png" class="img-fluid" alt="Skills and Expertise Illustration">  
+            </div>
+            <div class="col-md">
+              <div class="container-fluid">
+                <h3 class="fw-bold text-light custom">To achieve the <span id="change">Impact</span></h3>
+                <br>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card text-white card-project mb-3" style="max-width: 28rem;">
+                      <div class="card-body">
+                        <h4 class="card-title hc">Product Strategy</h4>
+                        <p class="card-text">Roadmapping, PRD's, A/B Testing</p>
+                      </div>
+                    </div>
                   </div>
-                  <div class="card-footer text-center">
-                    <small onclick="project1()">Visit Site</small>
+                  <div class="col-md-6">
+                    <div class="card text-white card-project mb-3" style="max-width: 28rem;">
+                      <div class="card-body">
+                        <h4 class="card-title hc">Product Design</h4>
+                        <p class="card-text">User Stories, User Flows, Wireframes, Persona Writing</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="card bg-info mx-2">
-                  <img src="images/p3.png" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title text-center">Portfolio Website</h5>
-                    <p class="card-text text-center">A portfolio website using HTML, CSS ,BOOTSTRAP and JS.</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card text-white card-project mb-3" style="max-width: 28rem;">
+                      <div class="card-body">
+                        <h4 class="card-title hc">Market and User Research</h4>
+                        <p class="card-text">Primary and Secondary Market Analysis, Competitor Analysis, Usability Testing</p>
+                      </div>
+                    </div>
                   </div>
-                  <div class="card-footer text-center">
-                    <small onclick="project2()">Visit Site</small>
+                  <div class="col-md-6">
+                    <div class="card text-white card-project mb-3" style="max-width: 28rem;">
+                      <div class="card-body">
+                        <h4 class="card-title hc">Analytics and Programming</h4>
+                        <p class="card-text">APIs, JavaScript, Python, SQL, HTML, CSS, Bootstrap, C#, Firebase, Google Analytics, Mixpanel</p>
+                      </div>
+                    </div>
                   </div>
-                </div>    
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="container">
+            <h3 class="fw-bold text-center hc display-3 custom_exp p-5 mt-lg-5">Experience</h3>
+            <div class="container"  data-aos="fade-up">
+              <div class="row d-flex">
+                <div class="col-md text-center">
+                  <img src="gpi_logo.png" class="img-fluid img-clogo" alt="...">
+                </div>
+                <div class="col-md">
+                  <h3 class="text-light">GPI India | January'24-Present</h3>
+                  <h4 class="text-light">Software Developer</h4>
+                  <p class="lead text-light">Improving the functionalities of TankDesign software which enables users to generate 3D-CAD models from the required specifications along with the hours estimation and price quotation for the build</p>
+                </div>
+              </div>
+            </div>
+            <hr class="text-light">
+            <div class="container"  data-aos="fade-up">
+              <div class="row d-flex">
+                <div class="col-md text-center">
+                  <img src="mm-logo-removebg-preview.png" class="img-fluid img-clogo" alt="...">
+                </div>
+                <div class="col-md">
+                  <h3 class="text-light">Mailmodo | June'23-January'24</h3>
+                  <h4 class="text-light">Product Management Intern</h4>
+                  <p class="lead text-light">I spearheaded efforts to streamline integration between various form builder tools and Mailmodo through PRDs. I revamped the platform's documentation for better search optimization. Additionally, I created form blocks for AMP emails, designed email automation journeys, and developed a competitor feature comparison document to support customer onboarding and provide enhanced user guidance.</p>
+                </div>
+              </div>
+            </div>
+            <hr class="text-light">
+            <div class="container" data-aos="fade-up">
+              <div class="row d-flex">
+                <div class="col-md text-center">
+                  <img src="tp-removebg-preview.png" class="img-fluid img-clogo" alt="...">
+                </div>
+                <div class="col-md">
+                  <h3 class="text-light">Troopod | December'22-February'23</h3>
+                  <h4 class="text-light">Product Strategy Intern</h4>
+                  <p class="lead text-light">Creating, maintaining, and iterating product strategy documents by analyzing market trends through primary and secondary research and building strategic solutions in alignment with the company's product goals.</p>
+                </div>
+              </div>
+            </div>
+            <hr class="text-light">
+            <div class="container" data-aos="fade-up">
+              <div class="row d-flex">
+                <div class="col-md text-center">
+                  <img src="qk-removebg-preview.png" class="img-fluid img-clogo" alt="...">
+                </div>
+                <div class="col-md">
+                  <h3 class="text-light">Qkrishi | September'22-March'23</h3>
+                  <h4 class="text-light">Product Development and Management Intern</h4>
+                  <p class="lead text-light">Working and coordinating on the development and integration of a LMS (Learning Management System) into the web application for quantum computing enthusiasts and learners. </p>
+                </div>
+              </div>
+            </div>
+            <hr class="text-light">
+            <div class="container" data-aos="fade-up">
+              <div class="row d-flex">
+                <div class="col-md text-center">
+                  <img src="fg.png" class="img-fluid img-clogo" alt="...">
+                </div>
+                <div class="col-md">
+                  <h3 class="text-light">Fluentgrid | June'22-July'22</h3>
+                  <h4 class="text-light">Summer Intern</h4>
+                  <p class="lead text-light">During my training tenure, I worked on a web development project. I made a functional and responsive website using the frontend tech stack HTML5, CSS3, Bootstrap5, and JavaScript and also learned to use the chrome developer tools.</p>
+                </div>
+              </div>
+            </div>
+            <hr class="text-light">
+            <div class="container" data-aos="fade-up">
+              <div class="row d-flex">
+                <div class="col-md text-center">
+                  <img src="gl-removebg-preview.png" class="img-fluid img-clogo" alt="...">
+                </div>
+                <div class="col-md">
+                  <h3 class="text-light">Glue Labs | December'21-March'22</h3>
+                  <h4 class="text-light">Content and Community Leader</h4>
+                  <p class="lead text-light">Hosted over 7 webinars around the topics of startups and entrepreneurship on fifo.im, managed a community of 40+ people and created content for social media.</p>
+                </div>
+              </div>
+            </div>
+            <hr class="text-light">
+            <div class="container" data-aos="fade-up">
+              <div class="row d-flex">
+                <div class="col-md text-center">
+                  <img src="kidex-removebg-preview.png" class="img-fluid img-clogo" alt="...">
+                </div>
+                <div class="col-md">
+                  <h3 class="text-light">KidEx | July'21-October'21</h3>
+                  <h4 class="text-light">Rubik's Cube Instructor</h4>
+                  <p class="lead text-light">Mentored and taught students across India, prepared course materials and video tutorials for WCA and Non-WCA events.</p>
+                </div>
+              </div>
             </div>
         </div>
     </section>
+
+    <section id="POR">
+      <div class="container">
+        <h3 class="fw-bold text-center hc display-3 custom_exp p-5">Position of Responsibility</h3>
+        <div class="container text-center" data-aos="fade-down">
+          <h3 class="text-light">-> <span id="com-colour">Head of Corporate Relations </span> - Hult Prize MAHE | September'22-March'23</h3>       
+          <h3 class="text-light">-> <span id="com-colour">Startup Development Executive</span>  - E-Cell, MIT Manipal | August'21-October'22</h3>
+        </div>
+      </div>
+    </section>
+
+    <section id="caseStudies">
+      <h3 class="fw-bold text-center hc display-3 custom_exp p-5">Case Studies</h3>
+      <div class="container" data-aos="fade-right">
+        <table class="table table-dark table-hover">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Case Studies, Assignments & Teardowns</th>
+              <th scope="col">About</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">»</th>
+              <td>Furrl</td>
+              <td><a href="https://drive.google.com/file/d/1j1r982ubiUvAJinQTbNC0v3w34RWEgu2/view?usp=sharing">Analyzed e-commerce traffic and user behavior using SQL to uncover trends and improve order processing. Identified and assessed Furrl's top 3 competitors for actionable insights ↗</a></td>
+            </tr>
+            <tr>
+              <th scope="row">»</th>
+              <td>Skylark Drones</td>
+              <td> <a href="https://drive.google.com/file/d/1FSV-mCmwBhw--xmZWWJTgKln2MAbWML7/view?usp=sharing">Market expansion strategy for Skylark Drones in Australia as a potential market ↗</a></td>
+            </tr>
+            <tr>
+              <th scope="row">»</th>
+              <td>Porter</td>
+              <td> <a href="https://drive.google.com/file/d/11aZ5kzmaKFTrKCxIzOLWLyBgq6-NTHGN/view?usp=sharing">Case study on Porter app to improve the customer LTV ↗</a></td>
+            </tr>
+            <tr>
+              <th scope="row">»</th>
+              <td>Troopod</td>
+              <td> <a href="https://drive.google.com/file/d/1iST1jODnorct5P_DcNYjpewGZKHO_l7e/view?usp=sharing">Product assignment for Internship ↗</a></td>
+            </tr>
+            <tr>
+              <th scope="row">»</th>
+              <td>Qkrishi</td>
+              <td> <a href="https://drive.google.com/file/d/109rt7H8KmCyD026kWxXgqG9I5aFHUYmj/view?usp=sharing">Case Study on LMS Integration ↗</a></td>
+            </tr>
+            <tr>
+              <th scope="row">»</th>
+              <td>Produscope PM Case Challenge by E-cell IIT Guwhati</td>
+              <td> <a href="https://drive.google.com/file/d/1a6ycQwgpbtx4Wmu63Zj-VK0WVE5hUCyb/view?usp=sharing">Product Case study of OnFinance App ↗</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h3 class="fw-bold hc text-center display-3 custom_proj p-5 mt-lg-5">Projects</h3>
+      <div class="container" data-aos="fade-right">
+        <div class="row d-flex">
+          <div class="col-md d-flex">
+            <div class="card card-project" style="width: 100%;">
+              <div class="card-body text-light">
+                <h5 class="card-title hc">Speedcubing Website</h5>
+                <p class="card-text">A  platform designed to let users explore a wide range of cubing courses offered, enabling them to enhance their skills and knowledge in the art of cubing. Users can easily browse the diverse courses and seamlessly book personalized coaching sessions.</p>
+                <a onclick="project1()" class="btn btn-custom">Visit Site ↗</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md d-flex">
+            <div class="card card-project" style="width: 100%;">
+              <div class="card-body text-light">
+                <h5 class="card-title hc">Smart On-campus Parking Website</h5>
+                <p class="card-text">A smart on-campus parking website that allows users to easily browse available parking locations, reserve a slot, and receive directions to their designated spot.</p>
+                <a onclick="project2()" class="btn btn-custom">Visit Site ↗</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md d-flex">
+            <div class="card card-project" style="width: 100%;">
+              <div class="card-body text-light">
+                <h5 class="card-title hc">Surgical Bionics Website</h5>
+                <p class="card-text">A platform dedicated to showcasing and providing a catalog of product information for surgical products and equipment distributed by Surgical Bionics (surgical distributors).</p>
+                <a onclick="project3()" class="btn btn-custom">Visit Site ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
     <section id="extras">
-        <div class="conatiner">
-            <h3 class="fw-bold hc text-center display-3 custom_ext p-5">Extra Curriculars</h3>
-            <p class="text-light lh-lg p-font text-center mx-5">I am a startup geek, a <span id="com-colour">world cube association competitor</span> and have worked for two edtech startups as a <span id="com-colour">speedcubing instructor</span> and have mentored over <span id="com-colour">50 students</span> across India, I am also a <span id="com-colour">crew member</span> of Blitzkrieg college dance club and love to have a chat about the new technologies, <span id="com-colour">startups </span>and the developments in the engineering sphere. </p>
+        <div class="container">
+            <h3 class="fw-bold hc text-center display-3 custom_ext">My Interests</h3>
+            <p class="text-light lh-lg text-center p-font" data-aos="fade-down">Have a keen interest in <span id="com-colour">product management</span> and love building products that add value to people. A <span id="com-colour">World Cube Association competitor</span> (Speedcuber) and a <span id="com-colour">rubik's cube instructor</span>. I have taught and mentored 150+ students across 3 countries. Eager to hear about the potential of the <span id="com-colour">global startup ecosystem</span> and would love to chat about <span id="com-colour">new technologies</span>, startups, and developments in the engineering sphere.</p>
         </div>
     </section>
     <br>
@@ -110,7 +320,11 @@
     <br>
     <footer class="p-5 bg-dark text-light text-center position-relative">
         <div class="container">
-            <p class="lead">Feel free to <a href="#">contact</a> me.</p>
+            <p class="lead">Feel free to contact me :)</p>
+            <button onclick="buttonl()" type="button" class="btn cbtn btn-outline-primary mx-1"><i class="fa-brands fa-linkedin"></i></button>
+            <button onclick="buttong()" type="button" class="btn cbtn btn-outline-secondary mx-1"><i class="fa-brands fa-github"></i></button>
+            <button onclick="buttont()"  type="button" class="btn cbtn btn-outline-info mx-1"><i class="fa-brands fa-twitter"></i></button>
+            <button onclick="buttoni()" type="button" class="btn cbtn btn-outline-danger mx-1"><i class="fa-brands fa-instagram"></i></button>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
