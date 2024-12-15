@@ -11,11 +11,23 @@ function buttoni(){
     window.location.href="https://www.instagram.com/paardhiv1/";
 }
 function project1(){
-    window.location.href="https://cubecoast.netlify.app/";
+    window.location.href="https://cubecoast.com/";
 }
 function project2(){
-    window.location.href="https://paardhiv-sarakam.netlify.app/";
+    window.location.href="https://parkspott.netlify.app/";
+}
+function project3(){
+    window.location.href="https://surgicalbionics.in/"
 }
 function buttonr(){
-    window.location.href="https://drive.google.com/file/d/1rXhZDY9WlUR6alZ3AfYQ6aodGstJSjnE/view?usp=sharing";
+    window.location.href="https://drive.google.com/file/d/1oYA4HC_vxoGtqKVU22x1zTZoCkF7D9nP/view?usp=sharing";
 }
+function Porter() {
+    window.location.href = "https://drive.google.com/file/d/11aZ5kzmaKFTrKCxIzOLWLyBgq6-NTHGN/view?usp=sharing";
+  }
+
+AOS.init({
+    offset: 200,
+    duration: 700,
+    once: true,
+});
