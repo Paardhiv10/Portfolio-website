@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* palette — from design/ reference */
+  --color-mirage: #1b1d1a;      /* near-black, hero bg */
+  --color-orange: #ff3f1a;      /* reddish orange, primary accent */
+  --color-orange-deep: #c22c0d; /* same hue, weighted for light backgrounds */
+  --color-jade: #44797f;        /* faded jade, secondary accent */
+  --color-aqua: #97d6df;        /* aqua island, card accent */
+  --color-canary: #fcf75e;      /* canary yellow, sticky notes */
+  --color-chalk: #e8ebf3;       /* chalk, light bg */
+
+  /* dedicated 6th color, cutting-mat section only */
+  --color-mat-green: #17332c;
+  --color-mat-green-line: #20443a;
+
+  /* toile pair — Education section only (blue ASCII on cream) */
+  --color-ink: #16309b;
+  --color-cream: #f0e8dd;
+
+  --color-background: var(--color-chalk);
+  --color-foreground: var(--color-mirage);
+
+  /* Display and body-serif are deliberately the same face. Instrument Serif
+     carries the headings at large sizes and the card titles at small ones;
+     hierarchy comes from scale, not from a second typeface. */
+  --font-display: var(--font-instrument);
+  --font-serif: var(--font-instrument);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+:root {
+  --background: var(--color-chalk);
+  --foreground: var(--color-mirage);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
