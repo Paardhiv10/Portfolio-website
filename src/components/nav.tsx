@@ -63,7 +63,7 @@ export function Nav() {
               href="/#home"
               onMouseEnter={() => play("hover")}
               onClick={() => play("click")}
-              className={`font-display text-xl leading-none tracking-wide transition-colors hover:text-orange ${textColor}`}
+              className={`font-display text-xl leading-none transition-colors hover:text-orange ${textColor}`}
             >
               PS.
             </Link>

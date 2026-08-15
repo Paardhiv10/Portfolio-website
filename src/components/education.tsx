@@ -26,7 +26,7 @@ export function Education() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.05 }}
-          className="max-w-3xl font-display text-5xl leading-[0.95] tracking-wide sm:text-6xl"
+          className="max-w-3xl font-display text-5xl leading-[0.95] tracking-tight sm:text-6xl"
         >
           I got my degree between these arches
         </motion.h2>

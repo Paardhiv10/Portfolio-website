@@ -33,7 +33,7 @@ export default async function BlogIndexPage() {
             <p className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-jade">
               Writing
             </p>
-            <h1 className="font-display text-5xl tracking-wide sm:text-6xl">
+            <h1 className="font-display text-5xl tracking-tight sm:text-6xl">
               The Blog
             </h1>
             <p className="mt-4 max-w-xl text-lg leading-relaxed text-mirage/70">
@@ -92,7 +92,7 @@ export default async function BlogIndexPage() {
                       day: "numeric",
                     })}
                   </p>
-                  <h2 className="mt-2 font-display text-2xl tracking-wide group-hover:text-orange">
+                  <h2 className="mt-2 font-display text-2xl group-hover:text-orange">
                     {post.title}
                   </h2>
                   {post.excerpt && (

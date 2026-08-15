@@ -2,14 +2,14 @@ export const site = {
   name: "Paardhiv Sarakam",
   role: "Software Engineer",
   location: "India",
-  // TODO(paardhiv): replace with your real email + handles before deploy —
-  // these are placeholders, not guessed real links.
-  email: "REPLACE_ME@paardhiv.com",
+  email: "paardhiv01@gmail.com",
   resumeHref: "/resume.pdf",
+  // Carried over from the pre-rebuild paardhiv.com, where these lived as
+  // window.location assignments in script.js rather than as hrefs.
   social: {
-    github: "REPLACE_ME",
-    linkedin: "REPLACE_ME",
-    twitter: "REPLACE_ME",
+    github: "https://github.com/Paardhiv10",
+    linkedin: "https://in.linkedin.com/in/paardhiv-sarakam-05b8aa204",
+    twitter: "https://x.com/PaardhivS",
   },
   hero: {
     eyebrow: "Software Engineer — building since forever",

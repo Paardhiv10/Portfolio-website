@@ -69,7 +69,7 @@ export function Algorithm() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.05 }}
-          className="font-display text-5xl tracking-wide sm:text-6xl"
+          className="font-display text-5xl tracking-tight sm:text-6xl"
         >
           The Algorithm
         </motion.h2>

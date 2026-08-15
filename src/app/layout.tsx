@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import { MotionConfig } from "motion/react";
-import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Source_Serif_4 } from "next/font/google";
 import { SoundProvider } from "@/lib/sound-context";
 import "./globals.css";
 
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
+// Carries the whole site — display headings and body copy both. The `opsz`
+// axis is what makes that work: the browser fits the optical size to the
+// rendered size, so the same face stays sturdy at 12px and fine at 13vw.
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
   subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
   display: "swap",
 });
 
@@ -44,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrument.variable} ${inter.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${sourceSerif.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-chalk text-mirage">
         <MotionConfig reducedMotion="user">

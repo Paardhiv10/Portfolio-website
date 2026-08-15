@@ -22,12 +22,13 @@
   --color-background: var(--color-chalk);
   --color-foreground: var(--color-mirage);
 
-  /* Display and body-serif are deliberately the same face. Instrument Serif
-     carries the headings at large sizes and the card titles at small ones;
-     hierarchy comes from scale, not from a second typeface. */
-  --font-display: var(--font-instrument);
-  --font-serif: var(--font-instrument);
-  --font-sans: var(--font-inter);
+  /* One typeface for everything that isn't a label: Source Serif 4 carries the
+     display headings, the card titles and the body copy. Hierarchy comes from
+     scale and weight, not from a second face. JetBrains Mono stays for the
+     small uppercase eyebrows and metadata. */
+  --font-display: var(--font-source-serif);
+  --font-serif: var(--font-source-serif);
+  --font-sans: var(--font-source-serif);
   --font-mono: var(--font-jetbrains);
 }
 
@@ -61,5 +62,6 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
 }

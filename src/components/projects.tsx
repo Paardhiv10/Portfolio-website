@@ -91,7 +91,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         <p className="relative mb-6 font-mono text-[11px] uppercase tracking-widest opacity-60">
           Experiment {String(index + 1).padStart(2, "0")} — {project.type}
         </p>
-        <h3 className="relative font-display text-3xl tracking-wide">
+        <h3 className="relative font-display text-3xl tracking-tight">
           {project.title}
         </h3>
         <p className="relative mt-4 text-sm leading-relaxed opacity-80">
@@ -227,7 +227,7 @@ export function Projects() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: 0.05 }}
-            className="font-display text-5xl tracking-wide text-chalk sm:text-6xl"
+            className="font-display text-5xl tracking-tight text-chalk sm:text-6xl"
           >
             Things on the Mat
           </motion.h2>

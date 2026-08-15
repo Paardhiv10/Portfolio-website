@@ -45,7 +45,9 @@ function Stamp({
 }) {
   return (
     <motion.a
-      href={href === "REPLACE_ME" ? "#" : href}
+      href={href}
+      target="_blank"
+      rel="noreferrer"
       onMouseEnter={onHover}
       onClick={onClick}
       whileHover={{ y: -5, rotate: 0 }}
@@ -64,7 +66,7 @@ function Stamp({
         aria-hidden
         className="pointer-events-none absolute inset-2 border border-dashed border-mirage/30"
       />
-      <span className="relative block font-display text-2xl leading-none tracking-wide">
+      <span className="relative block font-display text-2xl leading-none">
         {label}
       </span>
       <span className="relative mt-2 block font-mono text-[11px] text-mirage/55">
@@ -80,7 +82,7 @@ export function SiteFooter() {
   const socials = [
     { label: "GitHub", handle: "/code", href: site.social.github },
     { label: "LinkedIn", handle: "/work", href: site.social.linkedin },
-    { label: "Twitter", handle: "/thoughts", href: site.social.twitter },
+    { label: "X", handle: "/thoughts", href: site.social.twitter },
   ];
 
   return (
@@ -105,7 +107,7 @@ export function SiteFooter() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.05 }}
-          className="font-display text-4xl tracking-wide sm:text-5xl"
+          className="font-display text-4xl tracking-tight sm:text-5xl"
         >
           Send Word
         </motion.h2>

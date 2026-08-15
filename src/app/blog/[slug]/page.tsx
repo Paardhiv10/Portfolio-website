@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }: Props) {
                 day: "numeric",
               })}
             </p>
-            <h1 className="font-display text-4xl tracking-wide sm:text-5xl">
+            <h1 className="font-display text-4xl tracking-tight sm:text-5xl">
               {post.title}
             </h1>
 
@@ -70,7 +70,7 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             )}
 
-            <div className="prose mt-10 max-w-none prose-headings:font-display prose-headings:tracking-wide prose-a:text-orange">
+            <div className="prose mt-10 max-w-none prose-headings:font-display prose-headings:tracking-tight prose-a:text-orange">
               {post.body && <PortableText value={post.body} />}
             </div>
           </div>

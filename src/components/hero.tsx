@@ -35,30 +35,37 @@ export function Hero() {
         <div className="max-w-xl">
           <motion.p
             {...fadeUp(0)}
-            className="mb-6 font-mono text-xs uppercase tracking-[0.25em] text-orange"
+            className="mb-5 font-mono text-xs uppercase tracking-[0.18em] text-orange sm:mb-6 sm:tracking-[0.25em]"
           >
             {site.hero.eyebrow}
           </motion.p>
 
           <motion.h1
             {...fadeUp(0.08)}
-            className="font-display text-[13vw] leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl"
+            // 0.92 leading suited Instrument Serif's compact vertical metrics.
+            // Source Serif 4 has far taller ascenders and deeper descenders, so
+            // the two-line mobile wrap needs real leading. The min() cap keeps
+            // the name off the right edge as the viewport approaches the sm
+            // breakpoint, where text-6xl (60px) takes over seamlessly.
+            className="font-display text-[min(12.5vw,3.75rem)] leading-[1.04] tracking-tight sm:text-6xl sm:leading-[0.95] lg:text-7xl"
           >
             <ScrambleText text={site.name} />
           </motion.h1>
 
           <motion.p
             {...fadeUp(0.18)}
-            className="mt-6 max-w-md text-lg leading-relaxed text-mirage/75"
+            className="mt-7 max-w-md text-lg leading-[1.5] text-mirage/75 sm:mt-6"
           >
             {site.hero.bio}
           </motion.p>
 
           <motion.div
             {...fadeUp(0.28)}
-            className="mt-6 flex items-center gap-2 font-mono text-xs text-mirage/55"
+            className="mt-6 flex items-start gap-2.5 font-mono text-xs leading-relaxed text-mirage/55"
           >
-            <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-orange" />
+            {/* shrink-0 keeps the dot round — as a flex child it otherwise gets
+                squashed into an oval once the tag wraps to two lines */}
+            <span className="mt-[0.42em] inline-block h-2 w-2 shrink-0 animate-pulse rounded-full bg-orange" />
             {site.hero.tag}
           </motion.div>
 
