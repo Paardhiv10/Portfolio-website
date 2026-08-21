@@ -5,11 +5,9 @@ import { AsciiPortrait } from "@/components/ascii-portrait";
 import { GrainOverlay } from "@/components/grain-overlay";
 import { ScrambleText } from "@/components/scramble-text";
 import { site } from "@/content/site";
-import { useSound } from "@/lib/sound-context";
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
-  const { play } = useSound();
 
   const fadeUp = (delay: number) =>
     reduceMotion
@@ -29,8 +27,13 @@ export function Hero() {
 
       {/* min-height mirrors the section's pt-28 exactly, and there is no
           bottom padding, so the portrait ends flush with the fold at every
-          breakpoint — stacked on mobile, anchored right from xl up */}
-      <div className="relative mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-6xl flex-col justify-center">
+          breakpoint — stacked on mobile, anchored right from xl up.
+          justify-end below xl is what keeps it flush: the portrait is in flow
+          there, and centring would split the leftover space above AND below
+          it, floating it off the section's bottom edge. From xl the portrait
+          is absolutely positioned at bottom-0, so it leaves the flow entirely
+          and the text block goes back to being vertically centred. */}
+      <div className="relative mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-6xl flex-col justify-end xl:justify-center">
         {/* text */}
         <div className="max-w-xl">
           <motion.p
@@ -59,34 +62,6 @@ export function Hero() {
             {site.hero.bio}
           </motion.p>
 
-          <motion.div
-            {...fadeUp(0.28)}
-            className="mt-6 flex items-start gap-2.5 font-mono text-xs leading-relaxed text-mirage/55"
-          >
-            {/* shrink-0 keeps the dot round — as a flex child it otherwise gets
-                squashed into an oval once the tag wraps to two lines */}
-            <span className="mt-[0.42em] inline-block h-2 w-2 shrink-0 animate-pulse rounded-full bg-orange" />
-            {site.hero.tag}
-          </motion.div>
-
-          <motion.div {...fadeUp(0.36)} className="mt-10 flex flex-wrap gap-4">
-            <a
-              href={site.resumeHref}
-              onMouseEnter={() => play("hover")}
-              onClick={() => play("click")}
-              className="rounded-full bg-orange px-6 py-3 font-mono text-xs uppercase tracking-widest text-chalk transition-transform hover:-translate-y-0.5"
-            >
-              Download Resume
-            </a>
-            <a
-              href="#footer"
-              onMouseEnter={() => play("hover")}
-              onClick={() => play("click")}
-              className="rounded-full border border-mirage/30 px-6 py-3 font-mono text-xs uppercase tracking-widest text-mirage transition-colors hover:border-orange hover:text-orange"
-            >
-              Get in Touch
-            </a>
-          </motion.div>
         </div>
 
         {/* ascii portrait — in flow on small screens; on desktop it stands on

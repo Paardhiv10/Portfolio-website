@@ -11,6 +11,7 @@ const LINKS = [
   { href: "/#projects", label: "Projects" },
   { href: "/#experience", label: "Experience" },
   { href: "/#education", label: "Education" },
+  { href: "/#interests", label: "Interests" },
   { href: "/blog", label: "Blog" },
 ];
 
@@ -21,7 +22,10 @@ export function Nav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const darkSections = document.querySelectorAll(".bg-black");
+      // Keyed off intent, not off a colour class — the footer is deep blue
+      // rather than black, and a selector on `.bg-black` would silently stop
+      // flipping the nav the moment a dark section is recoloured.
+      const darkSections = document.querySelectorAll("[data-nav-dark]");
       const navTop = 16;
       const navBottom = 72;
       let overDark = false;
@@ -50,13 +54,22 @@ export function Nav() {
       <div className="mx-auto w-full max-w-5xl">
         <div className="relative h-14">
           <div
-            className={`relative flex h-14 items-center justify-between gap-3 rounded-2xl border border-white/40 px-5 transition-colors duration-300 ${textColor}`}
+            className={`relative flex h-14 items-center justify-between gap-3 rounded-2xl border px-5 transition-colors duration-300 ${
+              isDarkBg ? "border-white/25" : "border-white/40"
+            } ${textColor}`}
             style={{
-              background: "rgba(255, 255, 255, 0.2)",
+              // A 20% white glass over the deep-blue footer lightens into a
+              // mid-blue that white nav text barely clears. Thinning the glass
+              // over dark sections keeps the panel behind it dark enough to
+              // read against.
+              background: isDarkBg
+                ? "rgba(255, 255, 255, 0.10)"
+                : "rgba(255, 255, 255, 0.2)",
               backdropFilter: "blur(24px) saturate(180%)",
               WebkitBackdropFilter: "blur(24px) saturate(180%)",
-              boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(0,0,0,0.06), 0 10px 30px rgba(27,29,26,0.18)",
+              boxShadow: isDarkBg
+                ? "inset 0 1px 0 rgba(255,255,255,0.28), 0 10px 30px rgba(0,0,0,0.28)"
+                : "inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(0,0,0,0.06), 0 10px 30px rgba(27,29,26,0.18)",
             }}
           >
             <Link

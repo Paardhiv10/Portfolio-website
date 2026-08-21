@@ -41,6 +41,7 @@ export function Algorithm() {
   return (
     <section
       id="algorithm"
+      data-nav-dark
       className="relative overflow-hidden bg-black px-6 py-28 text-chalk sm:px-10 lg:px-16"
     >
       {/* tiled backdrop, echoing the patterned field behind a poster */}

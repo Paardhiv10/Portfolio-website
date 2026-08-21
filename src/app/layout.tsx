@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { MotionConfig } from "motion/react";
-import { JetBrains_Mono, Source_Serif_4 } from "next/font/google";
+import {
+  JetBrains_Mono,
+  Shantell_Sans,
+  Source_Serif_4,
+} from "next/font/google";
 import { SoundProvider } from "@/lib/sound-context";
 import "./globals.css";
 
@@ -17,6 +21,15 @@ const sourceSerif = Source_Serif_4({
 
 const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+// Marker hand for the sticky notes only. Shantell Sans is the rare marker face
+// that stays legible in a paragraph — Permanent Marker and friends fall apart
+// below ~20px, and the notes carry real body copy.
+const shantell = Shantell_Sans({
+  variable: "--font-shantell",
   subsets: ["latin"],
   display: "swap",
 });
@@ -42,7 +55,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sourceSerif.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${sourceSerif.variable} ${jetbrains.variable} ${shantell.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-chalk text-mirage">
         <MotionConfig reducedMotion="user">

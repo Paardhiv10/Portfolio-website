@@ -88,13 +88,29 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
           }}
         />
 
-        <p className="relative mb-6 font-mono text-[11px] uppercase tracking-widest opacity-60">
+        {/* The eyebrow stays mono — it reads as a printed index stamp on the
+            note, and keeps the label system consistent across every section.
+            Everything hand-written on the note is marker. */}
+        <p className="relative mb-5 font-mono text-[11px] uppercase tracking-widest opacity-60">
           Experiment {String(index + 1).padStart(2, "0")} — {project.type}
         </p>
-        <h3 className="relative font-display text-3xl tracking-tight">
+
+        <h3 className="relative font-marker text-2xl font-bold leading-tight">
           {project.title}
         </h3>
-        <p className="relative mt-4 text-sm leading-relaxed opacity-80">
+
+        {project.metric && (
+          <p className="relative mt-3 flex items-baseline gap-2">
+            <span className="font-marker text-5xl font-semibold leading-none tracking-tight">
+              {project.metric.value}
+            </span>
+            <span className="font-mono text-[11px] uppercase tracking-widest opacity-60">
+              {project.metric.label}
+            </span>
+          </p>
+        )}
+
+        <p className="relative mt-4 font-marker text-sm leading-relaxed opacity-80">
           {project.description}
         </p>
 

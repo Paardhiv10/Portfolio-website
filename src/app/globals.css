@@ -30,6 +30,8 @@
   --font-serif: var(--font-source-serif);
   --font-sans: var(--font-source-serif);
   --font-mono: var(--font-jetbrains);
+  /* marker hand — sticky notes only */
+  --font-marker: var(--font-shantell);
 }
 
 :root {

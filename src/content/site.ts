@@ -60,7 +60,20 @@ export const site = {
       },
     ],
   },
+  // `metric` is the headline number inked large on the note. Leave it null when
+  // there isn't a real figure to show — the note simply renders without one
+  // rather than carrying a made-up stat.
   projects: [
+    {
+      id: "wca-extension",
+      title: "WCA Extension",
+      type: "Chrome Extension",
+      description:
+        "REPLACE_ME — one or two lines on what the extension does for WCA competitors.",
+      color: "aqua",
+      rotate: -1.5,
+      metric: { value: "600+", label: "installs" },
+    },
     {
       id: "speedcubing",
       title: "CubeCoast",
@@ -69,6 +82,7 @@ export const site = {
         "A platform for browsing speedcubing courses and booking 1:1 coaching sessions — built after years of teaching cubing myself and feeling every bit of friction in the old way of doing it.",
       color: "canary",
       rotate: -2,
+      metric: null,
     },
     {
       id: "parking",
@@ -78,6 +92,7 @@ export const site = {
         "Browse open spots, reserve a slot, get walking directions — a small system that made finding parking on campus a non-event instead of a daily headache.",
       color: "aqua",
       rotate: 1.5,
+      metric: null,
     },
     {
       id: "bionics",
@@ -87,6 +102,7 @@ export const site = {
         "A product and information platform for a surgical equipment distributor — built to make a dense technical catalog easy to browse and easy to quote from.",
       color: "orange",
       rotate: -1,
+      metric: null,
     },
     // second row — the case studies from the old portfolio
     {
@@ -97,6 +113,7 @@ export const site = {
         "Dug into where Furrl's e-commerce traffic actually came from, sized it against competitors, and wrote up what I'd change to convert more of it.",
       color: "aqua",
       rotate: 1.5,
+      metric: null,
     },
     {
       id: "skylark",
@@ -106,6 +123,7 @@ export const site = {
         "A go-to-market read on expanding into Australia — market conditions, who they'd be up against, and the sequence I'd bet on.",
       color: "orange",
       rotate: -1.5,
+      metric: null,
     },
     {
       id: "porter",
@@ -115,6 +133,7 @@ export const site = {
         "Pulled apart customer lifetime value to find where retention leaked, and proposed the levers most likely to move it.",
       color: "canary",
       rotate: 2,
+      metric: null,
     },
   ],
   experience: [

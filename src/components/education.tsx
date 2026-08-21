@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Image from "next/image";
 import { AsciiCampus } from "@/components/ascii-campus";
 import { site } from "@/content/site";
 
@@ -51,13 +52,17 @@ export function Education() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="flex flex-col justify-center border-b border-ink/20 pb-12"
           >
-            {/* TODO(paardhiv): swap this box for the real photo — an
-                <Image src=… fill className="object-cover" /> inside the same
-                wrapper will drop straight in and keep the framing. */}
-            <div className="grid aspect-[4/3] w-full place-items-center border border-ink/15 bg-ink/5">
-              <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/40">
-                Photo
-              </span>
+            {/* The source is 1250×1680, so the frame is 3:4 to match. The
+                placeholder here was 4:3, which would have cropped a portrait
+                photo down to a horizontal band through the middle. */}
+            <div className="relative aspect-[3/4] w-full overflow-hidden border border-ink/15 bg-ink/5">
+              <Image
+                src="/education/grad.png"
+                alt="Graduation day"
+                fill
+                sizes="(min-width: 1024px) 34vw, 100vw"
+                className="object-cover"
+              />
             </div>
 
             {/* TODO(paardhiv): placeholder copy */}
