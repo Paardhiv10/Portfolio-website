@@ -4,8 +4,17 @@ import { CollectionPage } from "@/components/collection-page";
 import { sneakers } from "@/content/collections";
 
 export const metadata: Metadata = {
-  title: "Sneakers — Paardhiv Sarakam",
-  description: "The shelf: pairs collected, worn, and occasionally retired.",
+  title: "Sneakers",
+  description:
+    "The shelf: pairs collected, worn, and occasionally retired to the box they came in.",
+  alternates: { canonical: "/sneakers" },
+  openGraph: {
+    title: "Sneakers — Paardhiv Sarakam",
+    description:
+      "The shelf: pairs collected, worn, and occasionally retired to the box they came in.",
+    url: "/sneakers",
+    type: "website",
+  },
 };
 
 export default function SneakersPage() {

@@ -54,6 +54,7 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
   const platterRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const draggedRef = useRef(false);
+  const landingRef = useRef(0);
   const [nowPlaying, setNowPlaying] = useState<Track | null>(null);
   const [playing, setPlaying] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -68,22 +69,33 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
   }, []);
 
   function land(track: Track) {
+    // Bumped on every landing so a stale play() rejection (from swapping
+    // `src` mid-flight) can't overwrite a track that's now playing fine.
+    const gen = ++landingRef.current;
+    const el = audioRef.current;
+
     setNowPlaying(track);
     play("sticky");
 
     if (!track.audio) {
+      // Stop any track already playing, since toggle() can't pause one
+      // that has no audio.
+      el?.pause();
       setPlaying(false);
       setMessage("No audio file for this one yet.");
       return;
     }
+
     setMessage(null);
-    const el = audioRef.current;
     if (!el) return;
     el.src = track.audio;
     el
       .play()
-      .then(() => setPlaying(true))
+      .then(() => {
+        if (gen === landingRef.current) setPlaying(true);
+      })
       .catch(() => {
+        if (gen !== landingRef.current) return; // superseded by a later landing
         setPlaying(false);
         setMessage("Tap the platter to start playback.");
       });
@@ -93,7 +105,14 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
     const el = audioRef.current;
     if (!el || !nowPlaying?.audio) return;
     if (el.paused) {
-      el.play().then(() => setPlaying(true)).catch(() => {});
+      el
+        .play()
+        .then(() => {
+          setPlaying(true);
+          // Clear the autoplay-blocked hint — the tap it asked for just happened.
+          setMessage(null);
+        })
+        .catch(() => {});
     } else {
       el.pause();
       setPlaying(false);
@@ -167,7 +186,9 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
                     draggedRef.current = false;
                   }, 0);
                 }}
-                className="aspect-square cursor-grab touch-none"
+                // `relative` is load-bearing: z-index (raised by whileDrag) is
+                // ignored on static elements, so the record painted under the deck.
+                className="relative aspect-square cursor-grab touch-none"
                 style={{ filter: "drop-shadow(0 10px 18px rgba(27,29,26,0.28))" }}
               >
                 <Record label={t.label} spinning={false} />
@@ -196,6 +217,23 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
           <div
             ref={platterRef}
             onClick={toggle}
+            // Only a keyboard control once a track is loaded — otherwise a
+            // record could be started from the keyboard but never paused.
+            {...(nowPlaying?.audio
+              ? {
+                  role: "button" as const,
+                  tabIndex: 0,
+                  "aria-label": playing
+                    ? `Pause ${nowPlaying.title}`
+                    : `Play ${nowPlaying.title}`,
+                  onKeyDown: (e: React.KeyboardEvent) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggle();
+                    }
+                  },
+                }
+              : {})}
             className="relative mx-auto grid aspect-square w-full max-w-[280px] cursor-pointer place-items-center rounded-full"
             style={{
               background:
@@ -264,7 +302,6 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
           )}
         </div>
 
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <audio
           ref={audioRef}
           onEnded={() => setPlaying(false)}

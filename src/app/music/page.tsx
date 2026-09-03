@@ -4,8 +4,17 @@ import { Turntable } from "@/components/turntable";
 import { tracks } from "@/content/collections";
 
 export const metadata: Metadata = {
-  title: "Music — Paardhiv Sarakam",
-  description: "The crate: records on heavy rotation. Drop one on the platter.",
+  title: "Music",
+  description:
+    "The crate: records on heavy rotation. Drop one on the platter and it plays.",
+  alternates: { canonical: "/music" },
+  openGraph: {
+    title: "Music — Paardhiv Sarakam",
+    description:
+      "The crate: records on heavy rotation. Drop one on the platter and it plays.",
+    url: "/music",
+    type: "website",
+  },
 };
 
 export default function MusicPage() {

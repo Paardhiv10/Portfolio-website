@@ -107,61 +107,19 @@ export const tracks: Track[] = [
 export type Flight = {
   id: string;
   airline: string;
-  /** IATA code inked small under the fin. */
-  code: string;
-  route: string;
-  year: string;
-  /** Livery colours — the fin is drawn, so no photo licensing to worry about. */
-  fin: { stabilizer: string; rudder: string; mark: string };
+  /** Background-removed tail photo in /public/fins, normalised to 512². */
+  fin: string;
 };
 
 export const flights: Flight[] = [
+  { id: "vistara", airline: "Vistara", fin: "/fins/vistara.png" },
+  { id: "akasa", airline: "Akasa Air", fin: "/fins/akasa.png" },
   {
-    id: "f1",
-    airline: "REPLACE_ME",
-    code: "XX",
-    route: "AAA — BBB",
-    year: "20XX",
-    fin: { stabilizer: "#16309b", rudder: "#0f2377", mark: "#e8ebf3" },
+    id: "airindia-express",
+    airline: "Air India Express",
+    fin: "/fins/airindia_express.png",
   },
-  {
-    id: "f2",
-    airline: "REPLACE_ME",
-    code: "XX",
-    route: "AAA — BBB",
-    year: "20XX",
-    fin: { stabilizer: "#ff3f1a", rudder: "#c22c0d", mark: "#f0e8dd" },
-  },
-  {
-    id: "f3",
-    airline: "REPLACE_ME",
-    code: "XX",
-    route: "AAA — BBB",
-    year: "20XX",
-    fin: { stabilizer: "#44797f", rudder: "#335d62", mark: "#e8ebf3" },
-  },
-  {
-    id: "f4",
-    airline: "REPLACE_ME",
-    code: "XX",
-    route: "AAA — BBB",
-    year: "20XX",
-    fin: { stabilizer: "#1b1d1a", rudder: "#000000", mark: "#fcf75e" },
-  },
-  {
-    id: "f5",
-    airline: "REPLACE_ME",
-    code: "XX",
-    route: "AAA — BBB",
-    year: "20XX",
-    fin: { stabilizer: "#efe3cd", rudder: "#d9c9a8", mark: "#1b1d1a" },
-  },
-  {
-    id: "f6",
-    airline: "REPLACE_ME",
-    code: "XX",
-    route: "AAA — BBB",
-    year: "20XX",
-    fin: { stabilizer: "#97d6df", rudder: "#6fb9c4", mark: "#1b1d1a" },
-  },
+  { id: "airasia", airline: "AirAsia", fin: "/fins/airasia.png" },
+  { id: "spicejet", airline: "SpiceJet", fin: "/fins/spicejet.png" },
+  { id: "indigo", airline: "IndiGo", fin: "/fins/indigo.png" },
 ];

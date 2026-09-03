@@ -61,7 +61,6 @@ export function Hero() {
           >
             {site.hero.bio}
           </motion.p>
-
         </div>
 
         {/* ascii portrait — in flow on small screens; on desktop it stands on

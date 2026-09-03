@@ -30,6 +30,8 @@ type Interest = {
   label: string;
   /** Where clicking the object goes. External links open in a new tab. */
   href?: string;
+  /** Where that link lands, for the screen-reader label. */
+  destination?: string;
 };
 
 const INTERESTS = {
@@ -39,6 +41,7 @@ const INTERESTS = {
     photo: null,
     label: "A vinyl record",
     href: "/music",
+    destination: "my record crate",
   },
   rocket: {
     fallback: Rocket,
@@ -52,6 +55,7 @@ const INTERESTS = {
     photo: null,
     label: "A Rubik's Cube",
     href: "https://www.worldcubeassociation.org/persons/2016PAAR01",
+    destination: "my World Cube Association profile",
   },
   sneaker: {
     fallback: Sneaker,
@@ -59,6 +63,7 @@ const INTERESTS = {
     photo: null,
     label: "A sneaker",
     href: "/sneakers",
+    destination: "my sneaker shelf",
   },
   shuttlecock: {
     fallback: Shuttlecock,
@@ -72,6 +77,7 @@ const INTERESTS = {
     photo: null,
     label: "An aircraft tail fin",
     href: "/travel",
+    destination: "the tail fins I've flown behind",
   },
 } satisfies Record<string, Interest>;
 
@@ -83,7 +89,8 @@ const INTERESTS = {
 function Figure({ kind }: { kind: keyof typeof INTERESTS }) {
   const reduceMotion = useReducedMotion();
   const { play } = useSound();
-  const { fallback: Art, photo, label, href } = INTERESTS[kind] as Interest;
+  const { fallback: Art, photo, label, href, destination } =
+    INTERESTS[kind] as Interest;
 
   const art = photo ? (
     <Image
@@ -111,10 +118,12 @@ function Figure({ kind }: { kind: keyof typeof INTERESTS }) {
       {...(href
         ? {
             href,
-            "aria-label": `${label} — opens ${external ? "the World Cube Association profile" : "a page"}`,
+            "aria-label": `${label} — opens ${destination ?? "another page"}`,
             ...(external ? { target: "_blank", rel: "noreferrer" } : {}),
           }
-        : { role: "img", "aria-label": label, tabIndex: 0 })}
+        : // No href: decoration, not a control. Leaving it focusable put two
+          // dead stops in the tab order that looked clickable and did nothing.
+          { role: "img", "aria-label": label })}
       initial="rest"
       animate="rest"
       whileHover="hover"
@@ -128,7 +137,9 @@ function Figure({ kind }: { kind: keyof typeof INTERESTS }) {
       transition={{ type: "spring", stiffness: 280, damping: 18 }}
       // align-[-0.22em] drops it onto the text baseline; the figures are square
       // and sized in em so they track the heading's responsive font size.
-      className="relative mx-[0.22em] inline-block h-[1.15em] w-[1.15em] cursor-pointer align-[-0.22em] outline-none"
+      className={`relative mx-[0.22em] inline-block h-[1.15em] w-[1.15em] align-[-0.22em] outline-none ${
+        href ? "cursor-pointer" : ""
+      }`}
     >
       {art}
     </Tag>

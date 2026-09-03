@@ -5,6 +5,7 @@ import {
   Shantell_Sans,
   Source_Serif_4,
 } from "next/font/google";
+import { site } from "@/content/site";
 import { SoundProvider } from "@/lib/sound-context";
 import "./globals.css";
 
@@ -34,16 +35,38 @@ const shantell = Shantell_Sans({
   display: "swap",
 });
 
+const DESCRIPTION =
+  "Software engineer and product builder. Ex-YC-backed and early-stage startups. Speedcuber. Building things that work and reading well.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://paardhiv.com"),
-  title: "Paardhiv Sarakam — Software Engineer",
-  description:
-    "Software engineer and product builder. Ex-YC-backed and early-stage startups. Speedcuber. Building things that work and reading well.",
+  // The template gives every child page a consistent suffix, so a page only
+  // has to declare its own name.
+  title: {
+    default: "Paardhiv Sarakam — Software Engineer",
+    template: "%s — Paardhiv Sarakam",
+  },
+  description: DESCRIPTION,
+  // Prevents query strings or alternate hosts from indexing as duplicate pages.
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Paardhiv Sarakam — Software Engineer",
-    description:
-      "Software engineer and product builder. Ex-YC-backed and early-stage startups. Speedcuber.",
+    description: DESCRIPTION,
     type: "website",
+    url: "/",
+    siteName: "Paardhiv Sarakam",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Paardhiv Sarakam — Software Engineer",
+    description: DESCRIPTION,
+    creator: "@PaardhivS",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
 };
 
@@ -58,6 +81,31 @@ export default function RootLayout({
       className={`${sourceSerif.variable} ${jetbrains.variable} ${shantell.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-chalk text-mirage">
+        {/* Person schema: ties name, role, and links into one search entity. */}
+        <script
+          type="application/ld+json"
+          // Sourced from site.ts so it can't drift from the rendered page.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: site.name,
+              url: "https://paardhiv.com",
+              jobTitle: site.role,
+              email: `mailto:${site.email}`,
+              address: {
+                "@type": "PostalAddress",
+                addressCountry: site.location,
+              },
+              sameAs: [
+                site.social.github,
+                site.social.linkedin,
+                site.social.twitter,
+                "https://www.worldcubeassociation.org/persons/2016PAAR01",
+              ],
+            }),
+          }}
+        />
         <MotionConfig reducedMotion="user">
           <SoundProvider>{children}</SoundProvider>
         </MotionConfig>

@@ -31,8 +31,16 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post) return { title: "Post not found" };
   return {
-    title: `${post.title} — Paardhiv Sarakam`,
+    title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `/blog/${slug}`,
+      type: "article",
+      publishedTime: post.publishedAt,
+    },
   };
 }
 

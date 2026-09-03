@@ -15,7 +15,6 @@ export const site = {
     eyebrow: "Software Engineer — building since forever",
     headline: "I build things that work, and read well.",
     bio: "I'm a software engineer who's spent the last few years inside YC-backed and early-stage startups — writing code, shipping product, and occasionally solving a Rubik's Cube faster than you can read this sentence.",
-    tag: "Currently: Software Developer at GPI India, shipping CAD tooling.",
   },
   algorithm: {
     intro: "To achieve the Impact",
@@ -145,7 +144,7 @@ export const site = {
       impact: "Building TankDesign's 3D-CAD model generation, spec, and quotation tooling.",
     },
     {
-      company: "Mailmodo",
+      company: "Mailmodo (YC S21)",
       logo: "/logos/mailmodo.png",
       role: "Product Management Intern",
       dates: "Jun 2023 — Jan 2024",

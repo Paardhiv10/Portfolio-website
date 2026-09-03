@@ -10,8 +10,17 @@ import type { PostListItem } from "@/lib/sanity/types";
 import { isSanityConfigured } from "../../../sanity/env";
 
 export const metadata: Metadata = {
-  title: "Blog — Paardhiv Sarakam",
-  description: "Notes on building, shipping, and the occasional cube solve.",
+  title: "Blog",
+  description:
+    "Notes on building, shipping, and the occasional cube solve.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    title: "Blog — Paardhiv Sarakam",
+    description:
+      "Notes on building, shipping, and the occasional cube solve.",
+    url: "/blog",
+    type: "website",
+  },
 };
 
 export const revalidate = 60;

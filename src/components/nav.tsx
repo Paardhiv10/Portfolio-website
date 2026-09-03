@@ -13,6 +13,8 @@ const LINKS = [
   { href: "/#education", label: "Education" },
   { href: "/#interests", label: "Interests" },
   { href: "/blog", label: "Blog" },
+  // Footer is otherwise only reachable by scrolling to the bottom.
+  { href: "/#footer", label: "Contact" },
 ];
 
 export function Nav() {
