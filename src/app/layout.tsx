@@ -80,7 +80,15 @@ export default function RootLayout({
       lang="en"
       className={`${sourceSerif.variable} ${jetbrains.variable} ${shantell.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-chalk text-mirage">
+      {/* Extensions (Grammarly, password managers) write attributes onto
+          <body> before React hydrates, which React then reports as a
+          mismatch. This only suppresses the warning for this element's own
+          attributes, one level deep — real mismatches inside the tree are
+          still reported. */}
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-chalk text-mirage"
+      >
         {/* Person schema: ties name, role, and links into one search entity. */}
         <script
           type="application/ld+json"

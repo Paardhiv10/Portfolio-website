@@ -194,14 +194,6 @@ export function Interests() {
           and get on a <Figure kind="tailfin" /> plane whenever I can find a
           reason to.
         </motion.p>
-
-        <motion.p
-          {...fadeUp}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-10 font-mono text-[11px] uppercase tracking-[0.25em] text-mirage/40"
-        >
-          Hover the cut-outs
-        </motion.p>
       </div>
     </section>
   );

@@ -41,7 +41,7 @@ export function CollectionPage({
             <h1 className="font-display text-5xl tracking-tight sm:text-6xl">
               {title}
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-[1.5] text-mirage/70">
+            <p className="mt-5 max-w-3xl text-lg leading-[1.5] text-mirage/70">
               {intro}
             </p>
 

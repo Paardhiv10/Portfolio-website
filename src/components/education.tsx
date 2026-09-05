@@ -1,9 +1,151 @@
 "use client";
 
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
+import { useLayoutEffect, useRef, useState } from "react";
 import { AsciiCampus } from "@/components/ascii-campus";
 import { site } from "@/content/site";
+
+type PorEntry = (typeof site.education.por)[number];
+
+// Photos sit side by side rather than stacked — a stack buried everything
+// under the top card. The tilts are the only thing left of the pile.
+const TILT = [-4, 2.5, -2] as const;
+/** Breathing room kept between the fan and the section's clipped edge. */
+const EDGE_GUTTER = 24;
+
+/** The photos, fanned out above whatever phrase carries them. Sized down on
+ * phones so all three still fit across a narrow screen. */
+function PhotoFan({
+  images,
+  label,
+}: {
+  images: readonly string[];
+  label: string;
+}) {
+  // The fan hangs off the phrase, and a phrase late in a line can start far
+  // enough right that the fan runs past the section — which is overflow-hidden,
+  // so the last photo would simply be cut off. Measure once on open and pull it
+  // back inside. useLayoutEffect so the shift lands before the first paint.
+  const ref = useRef<HTMLSpanElement>(null);
+  const [shift, setShift] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    const section = el?.closest("section");
+    if (!el || !section) return;
+    const overflow =
+      el.getBoundingClientRect().right -
+      (section.getBoundingClientRect().right - EDGE_GUTTER);
+    if (overflow > 0) setShift(-overflow);
+  }, []);
+
+  return (
+    <span
+      ref={ref}
+      style={{ transform: `translateX(${shift}px)` }}
+      className="pointer-events-none absolute bottom-full left-0 z-20 mb-4 flex gap-2 sm:gap-3"
+    >
+      {images.map((src, i) => (
+        <motion.span
+          key={src}
+          initial={{ opacity: 0, y: 10, rotate: 0 }}
+          animate={{ opacity: 1, y: 0, rotate: TILT[i % TILT.length] }}
+          exit={{ opacity: 0, y: 10, rotate: 0 }}
+          transition={{ duration: 0.22, delay: i * 0.05, ease: "easeOut" }}
+          className="relative block h-20 w-24 shrink-0 overflow-hidden rounded-lg border-4 border-white shadow-[0_14px_28px_-8px_rgba(27,29,26,0.4)] sm:h-28 sm:w-36"
+        >
+          <Image
+            src={src}
+            alt={`${label} — photo ${i + 1}`}
+            fill
+            sizes="(min-width: 640px) 144px, 96px"
+            className="object-cover"
+          />
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
+/** A club/role row. The photos hang off one phrase inside the bullets —
+ * `highlight` in site.ts — rather than off the role title, so the thing you
+ * hover is the thing the photos are of. */
+function PorItem({ p }: { p: PorEntry }) {
+  // Two separate states, not one: with a single flag, a click while the
+  // pointer was already hovering would toggle the photos straight back off.
+  // Hover drives it for a mouse, pinning for a tap, and either one shows it.
+  const [hovered, setHovered] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const open = hovered || pinned;
+
+  /** Splits a bullet around `highlight` so the phrase can carry the photos.
+   * Falls back to the plain string when the phrase isn't in this bullet. */
+  function renderBullet(bullet: string) {
+    const at = bullet.indexOf(p.highlight);
+    if (at === -1) return bullet;
+
+    return (
+      <>
+        {bullet.slice(0, at)}
+        {/* A span rather than a button so the phrase still wraps with the
+            sentence, and `static` below sm so the photos anchor to the row
+            instead of to a wrapped inline box — anchoring to the phrase on a
+            narrow screen throws the fan off the side of the page. */}
+        <span
+          role="button"
+          tabIndex={0}
+          aria-expanded={open}
+          className="static cursor-pointer underline decoration-ink/30 decoration-1 underline-offset-4 transition-colors hover:decoration-ink/60 sm:relative"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onFocus={() => setHovered(true)}
+          onBlur={() => setHovered(false)}
+          // Touch fires enter then leave on a tap, so hover alone only ever
+          // flickered the photos on a phone. Tapping pins them instead.
+          onClick={() => setPinned((v) => !v)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setPinned((v) => !v);
+            }
+          }}
+        >
+          {p.highlight}
+          <AnimatePresence>
+            {open && p.images.length > 0 && (
+              <PhotoFan images={p.images} label={p.org} />
+            )}
+          </AnimatePresence>
+        </span>
+        {bullet.slice(at + p.highlight.length)}
+      </>
+    );
+  }
+
+  return (
+    <li className="relative border-b border-ink/15 pb-8 last:border-b-0 last:pb-0">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <p className="font-serif text-2xl leading-tight tracking-tight">
+          {p.role}
+        </p>
+        <p className="font-mono text-[11px] uppercase tracking-widest text-ink/45">
+          {p.dates}
+        </p>
+      </div>
+      <p className="mt-1.5 text-sm text-ink/65">{p.org}</p>
+
+      <ul className="mt-4 space-y-2">
+        {p.bullets.map((b) => (
+          <li key={b} className="flex gap-2.5 text-base leading-relaxed text-ink/70">
+            <span aria-hidden className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-ink/35" />
+            <span>{renderBullet(b)}</span>
+          </li>
+        ))}
+      </ul>
+    </li>
+  );
+}
 
 export function Education() {
   return (
@@ -65,21 +207,23 @@ export function Education() {
               />
             </div>
 
-            {/* TODO(paardhiv): placeholder copy */}
             <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.25em] text-ink/50">
-              Placeholder
+              Manipal, India
             </p>
             <p className="mt-3 text-base leading-relaxed text-ink/65">
-              A couple of lines about the place, sitting under the photo. Enough
-              copy here to show how the column breathes without crowding the
-              art beside it.
+              I graduated from MIT Manipal with an ECE degree, but spent most
+              of my time outside the classroom — in student clubs like Hult
+              Prize and E-Cell, doing a bunch of internships, and building
+              CubeCoast while exploring and learning more about startups.
+              These four years at college have been truly transformational.
             </p>
           </motion.div>
         </div>
 
-        {/* the degree and the clubs, moved below the row and given the full
-            width to spread across */}
-        <div className="mt-14 grid grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-20">
+        {/* positions of responsibility — stacked, each spanning the section
+            end to end. The hover photos float above the title instead of
+            needing reserved space of their own. */}
+        <div className="mt-14">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -87,41 +231,12 @@ export function Education() {
             transition={{ duration: 0.5 }}
           >
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/50">
-              The Degree
-            </p>
-            <p className="mt-4 font-serif text-3xl leading-tight tracking-tight sm:text-4xl">
-              {site.education.degree}
-            </p>
-            <p className="mt-3 text-base text-ink/65">
-              {site.education.university}
-            </p>
-          </motion.div>
-
-          {/* positions of responsibility — plain rows, no cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/50">
               Where I Showed Up
             </p>
 
-            <ul className="mt-4">
+            <ul className="mt-4 flex flex-col gap-10">
               {site.education.por.map((p) => (
-                <li
-                  key={p.org}
-                  className="border-b border-ink/15 py-5 last:border-b-0 last:pb-0"
-                >
-                  <p className="font-serif text-2xl leading-tight tracking-tight">
-                    {p.role}
-                  </p>
-                  <p className="mt-1.5 text-sm text-ink/65">{p.org}</p>
-                  <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-ink/45">
-                    {p.dates}
-                  </p>
-                </li>
+                <PorItem key={p.org} p={p} />
               ))}
             </ul>
           </motion.div>

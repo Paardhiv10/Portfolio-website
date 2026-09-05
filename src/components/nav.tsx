@@ -7,11 +7,8 @@ import { site } from "@/content/site";
 import { useSound } from "@/lib/sound-context";
 
 const LINKS = [
-  { href: "/#algorithm", label: "Skills" },
-  { href: "/#projects", label: "Projects" },
+  { href: "/#work", label: "Work" },
   { href: "/#experience", label: "Experience" },
-  { href: "/#education", label: "Education" },
-  { href: "/#interests", label: "Interests" },
   { href: "/blog", label: "Blog" },
   // Footer is otherwise only reachable by scrolling to the bottom.
   { href: "/#footer", label: "Contact" },
@@ -31,7 +28,7 @@ export function Nav() {
       const navTop = 16;
       const navBottom = 72;
       let overDark = false;
-      
+
       for (let i = 0; i < darkSections.length; i++) {
         const rect = darkSections[i].getBoundingClientRect();
         if (rect.top <= navBottom && rect.bottom >= navTop) {
@@ -39,7 +36,7 @@ export function Nav() {
           break;
         }
       }
-      
+
       setIsDarkBg(overDark);
     };
 
@@ -56,7 +53,10 @@ export function Nav() {
       <div className="mx-auto w-full max-w-5xl">
         <div className="relative h-14">
           <div
-            className={`relative flex h-14 items-center justify-between gap-3 rounded-2xl border px-5 transition-colors duration-300 ${
+            // Full width on phones — hugging the content there leaves a stub
+            // of a pill holding just the logo and two buttons. From md up the
+            // links are in it, so it can shrink to fit again.
+            className={`relative mx-auto flex h-14 w-full items-center justify-between gap-6 rounded-full border px-6 transition-colors duration-300 md:w-fit md:gap-10 md:px-7 ${
               isDarkBg ? "border-white/25" : "border-white/40"
             } ${textColor}`}
             style={{
@@ -83,7 +83,9 @@ export function Nav() {
               PS.
             </Link>
 
-            <nav className={`hidden items-center gap-7 font-mono text-[11px] uppercase tracking-widest transition-colors duration-300 md:flex ${textColor}`}>
+            <nav
+              className={`hidden items-center gap-7 font-mono text-[11px] uppercase tracking-widest transition-colors duration-300 md:flex ${textColor}`}
+            >
               {LINKS.map((link) => (
                 <Link
                   key={link.href}
@@ -148,14 +150,18 @@ export function Nav() {
                 )}
               </button>
 
-              <Link
+              {/* A plain anchor, not next/link: the resume lives on Drive, so
+                  it opens in its own tab instead of dropping the portfolio. */}
+              <a
                 href={site.resumeHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 onMouseEnter={() => play("hover")}
                 onClick={() => play("click")}
                 className={`hidden rounded-2xl border px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest transition-colors hover:border-orange hover:text-orange sm:block ${borderColor} ${textColor}`}
               >
                 Resume
-              </Link>
+              </a>
 
               <button
                 type="button"
@@ -203,7 +209,8 @@ export function Nav() {
               // the filter's instability.
               className={`mt-2 rounded-2xl border border-white/40 transition-colors duration-300 md:hidden ${textColor}`}
               style={{
-                background: "linear-gradient(to bottom, rgba(244,245,248,0.7), rgba(230,232,239,0.7))",
+                background:
+                  "linear-gradient(to bottom, rgba(244,245,248,0.7), rgba(230,232,239,0.7))",
                 backdropFilter: "blur(24px)",
                 boxShadow:
                   "inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 34px rgba(27,29,26,0.25)",
@@ -223,8 +230,10 @@ export function Nav() {
                     {link.label}
                   </Link>
                 ))}
-                <Link
+                <a
                   href={site.resumeHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => {
                     play("click");
                     setMenuOpen(false);
@@ -232,7 +241,7 @@ export function Nav() {
                   className={`py-3 hover:text-orange sm:hidden ${textColor}`}
                 >
                   Resume →
-                </Link>
+                </a>
               </nav>
             </motion.div>
           )}

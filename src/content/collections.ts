@@ -12,7 +12,8 @@ export type Sneaker = {
   name: string;
   brand: string;
   colourway: string;
-  year: string;
+  /** Purchase year isn't tracked, so this stays null rather than guessed. */
+  year: string | null;
   /** /public/sneakers/<file>.png — background-removed, shot from the side. */
   photo: string | null;
   note: string;
@@ -20,40 +21,40 @@ export type Sneaker = {
 
 export const sneakers: Sneaker[] = [
   {
-    id: "s1",
-    name: "REPLACE_ME",
-    brand: "REPLACE_ME",
-    colourway: "REPLACE_ME",
-    year: "20XX",
-    photo: null,
-    note: "A line about why this one matters.",
+    id: "first-pair",
+    name: "Air Jordan 1 Low",
+    brand: "Air Jordan",
+    colourway: "Cement Fire Red",
+    year: null,
+    photo: "/sneakers/first-pair.png",
+    note: "The first pair I bought myself.",
   },
   {
-    id: "s2",
-    name: "REPLACE_ME",
-    brand: "REPLACE_ME",
-    colourway: "REPLACE_ME",
-    year: "20XX",
-    photo: null,
-    note: "A line about why this one matters.",
+    id: "industrial-blue",
+    name: "Air Jordan 1 Low",
+    brand: "Air Jordan",
+    colourway: "Industrial Blue",
+    year: null,
+    photo: "/sneakers/industrial-blue.png",
+    note: "My second pair of Jordans.",
   },
   {
-    id: "s3",
-    name: "REPLACE_ME",
-    brand: "REPLACE_ME",
-    colourway: "REPLACE_ME",
-    year: "20XX",
-    photo: null,
-    note: "A line about why this one matters.",
+    id: "initiator",
+    name: "Initiator",
+    brand: "Nike",
+    colourway: "Cargo Khaki",
+    year: null,
+    photo: "/sneakers/initiator.png",
+    note: "My daily beater.",
   },
   {
-    id: "s4",
-    name: "REPLACE_ME",
-    brand: "REPLACE_ME",
-    colourway: "REPLACE_ME",
-    year: "20XX",
-    photo: null,
-    note: "A line about why this one matters.",
+    id: "onitsuka-tiger",
+    name: "Mexico 66",
+    brand: "Onitsuka Tiger",
+    colourway: "Birch Green",
+    year: null,
+    photo: "/sneakers/onitsuka-tiger.png",
+    note: "The pair I love the most.",
   },
 ];
 

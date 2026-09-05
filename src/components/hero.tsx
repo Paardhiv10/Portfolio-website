@@ -6,6 +6,36 @@ import { GrainOverlay } from "@/components/grain-overlay";
 import { ScrambleText } from "@/components/scramble-text";
 import { site } from "@/content/site";
 
+// \b on both ends so `product` can't match inside `production`. Plain word
+// boundaries rather than lookbehind: a lookbehind is a syntax error in older
+// Safari, which would throw here at module scope and take the page with it.
+const HIGHLIGHT_RE = new RegExp(
+  `\\b(${site.hero.highlights
+    .map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("|")})\\b`,
+  "g",
+);
+
+// `as const` narrows the array to its literal members, which would reject a
+// plain string lookup below.
+const HIGHLIGHTS: readonly string[] = site.hero.highlights;
+
+/** Splits a paragraph so the crucial phrases can carry the accent underline. */
+function withHighlights(text: string) {
+  return text.split(HIGHLIGHT_RE).map((part, i) =>
+    HIGHLIGHTS.includes(part) ? (
+      <span
+        key={`${part}-${i}`}
+        className="text-mirage underline decoration-orange/70 decoration-1 underline-offset-[5px]"
+      >
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
+
 export function Hero() {
   const reduceMotion = useReducedMotion();
 
@@ -34,33 +64,35 @@ export function Hero() {
           is absolutely positioned at bottom-0, so it leaves the flow entirely
           and the text block goes back to being vertically centred. */}
       <div className="relative mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-6xl flex-col justify-end xl:justify-center">
-        {/* text */}
+        {/* text — one column, one measure. The heading and every paragraph
+            share `max-w-xl` so the block reads as a single justified-looking
+            box rather than a heading with a narrower column hanging off it. */}
         <div className="max-w-xl">
-          <motion.p
-            {...fadeUp(0)}
-            className="mb-5 font-mono text-xs uppercase tracking-[0.18em] text-orange sm:mb-6 sm:tracking-[0.25em]"
-          >
-            {site.hero.eyebrow}
-          </motion.p>
-
           <motion.h1
-            {...fadeUp(0.08)}
-            // 0.92 leading suited Instrument Serif's compact vertical metrics.
-            // Source Serif 4 has far taller ascenders and deeper descenders, so
-            // the two-line mobile wrap needs real leading. The min() cap keeps
-            // the name off the right edge as the viewport approaches the sm
-            // breakpoint, where text-6xl (60px) takes over seamlessly.
-            className="font-display text-[min(12.5vw,3.75rem)] leading-[1.04] tracking-tight sm:text-6xl sm:leading-[0.95] lg:text-7xl"
+            {...fadeUp(0)}
+            // Only a little larger than the body: the reference the copy is
+            // modelled on keeps the whole block near one size, so the greeting
+            // opens the paragraph rather than shouting over it.
+            className="font-display text-[min(9vw,2.25rem)] leading-tight tracking-tight sm:text-4xl"
           >
-            <ScrambleText text={site.name} />
+            <ScrambleText text={site.hero.greeting} />
           </motion.h1>
 
-          <motion.p
-            {...fadeUp(0.18)}
-            className="mt-7 max-w-md text-lg leading-[1.5] text-mirage/75 sm:mt-6"
-          >
-            {site.hero.bio}
-          </motion.p>
+          {/* Justified with hyphenation so every line but the last reaches the
+              same right edge — that ragged edge is what read as empty space.
+              Only justify from sm up: on a phone the measure is too narrow to
+              set without opening gaps between words. */}
+          <div className="mt-8 space-y-5">
+            {site.hero.bio.map((para, i) => (
+              <motion.p
+                key={para}
+                {...fadeUp(0.16 + i * 0.06)}
+                className="hyphens-auto text-pretty text-[17px] leading-[1.65] text-mirage/75 sm:text-justify sm:text-lg"
+              >
+                {withHighlights(para)}
+              </motion.p>
+            ))}
+          </div>
         </div>
 
         {/* ascii portrait — in flow on small screens; on desktop it stands on
