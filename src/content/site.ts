@@ -3,9 +3,8 @@ export const site = {
   role: "Software Engineer",
   location: "India",
   email: "paardhiv01@gmail.com",
-  // External now, so the nav opens it in a new tab rather than navigating away.
-  // `?usp=sharing` is stripped — it is Drive's share-source marker, not needed
-  // to view the file.
+  // External now, so the nav opens it in a new tab. `?usp=sharing` is stripped —
+  // it is Drive's share-source marker, not needed to view the file.
   resumeHref:
     "https://drive.google.com/file/d/1IErAfhFTDkvlHoApfqy5gtW1L3Ez1BMu/view",
   // Carried over from the pre-rebuild paardhiv.com, where these lived as
@@ -21,12 +20,11 @@ export const site = {
     greeting: "Hi, I'm Paardhiv",
     bio: [
       "I like building things from 0→1 — the kind that make complicated problems feel simple. I start with a messy problem, work out how people actually experience it, and turn it into something useful.",
-      "That means staying with it end to end — the first question, the rough idea, the technical calls, the build, and the day someone actually uses it. The point of all of it is to make something people want.",
-      "Most curious about AI, product, and the place where technology meets real problems. I learn by building — blank page, figure it out, then keep finding ways to make it better.",
+      "That means staying with it end to end — the first question, the rough idea, the technical decisions, the build, and the day someone actually uses it. The point of all of it is to make something people want.",
+      "I'm most curious about AI, product, and the place where technology meets real problems. I learn by building — starting with a blank page, figuring it out, then constantly finding ways to make it better.",
     ],
-    // Phrases lifted out of `bio` and given an accent underline. Everything
-    // else stays one size in one font, so the emphasis is a few words rather
-    // than a change of typeface. Each must appear verbatim above.
+    // Phrases lifted out of `bio` and given an accent underline. Each must appear
+    // verbatim above or nothing is marked up.
     highlights: ["0→1", "make something people want", "AI", "product"],
   },
   algorithm: {
@@ -61,21 +59,21 @@ export const site = {
         highlight: "Programming",
         skills: [
           "JavaScript",
+          "TypeScript",
           "Python",
+          "C#",
           "SQL",
-          "HTML / CSS",
           "APIs",
           "Firebase",
+          "PostHog",
           "Google Analytics",
           "Mixpanel",
         ],
       },
     ],
   },
-  // `metric` is the headline number inked large on the note. Leave it null when
-  // there isn't a real figure to show — the note simply renders without one
-  // rather than carrying a made-up stat. `url` works the same way: a note with
-  // one peels off and opens it, a note with null stays put.
+  // `metric` and `url` are both optional: null means no real figure and no link,
+  // and the note renders fine without either rather than inventing one.
   projects: [
     {
       id: "wca-extension",
@@ -100,49 +98,51 @@ export const site = {
       url: "https://cubecoast.com",
     },
     {
-      id: "parking",
-      title: "Smart Campus Parking",
-      type: "Web App",
+      id: "parkspot",
+      title: "ParkSpot",
+      type: "Hackathon Build",
       description:
-        "Browse open spots, reserve a slot, get walking directions — a small system that made finding parking on campus a non-event instead of a daily headache.",
-      color: "aqua",
-      rotate: 1.5,
-      metric: null,
-      url: null,
-    },
-    {
-      id: "bionics",
-      title: "Surgical Bionics Catalog",
-      type: "Product Catalog",
-      description:
-        "A product and information platform for a surgical equipment distributor — built to make a dense technical catalog easy to browse and easy to quote from.",
+        "Browse open parking locations, reserve a slot, and get directions to your bay, with a QR check-in on arrival. I led a team of four at an inter-college hackathon run by MIT Manipal and MAHE's Innovation Centre with CII Mangalore, on parking management for academic campuses.",
       color: "orange",
-      rotate: -1,
-      metric: null,
-      url: null,
+      rotate: 1.5,
+      // 1st runner-up, written as the placing so it reads at a glance.
+      metric: { value: "2nd", label: "of 50+ teams" },
+      url: "https://parkspott.netlify.app/",
     },
-    // second row — the case studies from the old portfolio
     {
-      id: "furrl",
-      title: "Furrl",
-      type: "Case Study",
+      id: "cubealgs",
+      title: "CubeAlgs",
+      type: "Learning Tool",
       description:
-        "Dug into where Furrl's e-commerce traffic actually came from, sized it against competitors, and wrote up what I'd change to convert more of it.",
-      color: "aqua",
+        "Learn cube algorithms and track which ones have actually stuck, puzzle by puzzle. Vibe-coded and shipped — 190+ visitors in 90 days with a high-engagement 4m 1s average session.",
+      color: "canary",
+      rotate: -1,
+      metric: { value: "4m 1s", label: "avg. session" },
+      url: "https://cubealgs.lovable.app/",
+    },
+    {
+      id: "cubeclash",
+      title: "CubeClash",
+      type: "Browser Game",
+      description:
+        "A sliding-tile race in the spirit of Rubik's Race, rebuilt for the browser: fill the glowing 3×3 centre to match a scrambled target, chasing either the fewest moves or a 60-second clock.",
+      color: "orange",
       rotate: 1.5,
       metric: null,
-      url: null,
+      url: "https://cubeclash.thecubingcompany.com/",
     },
+    // the case studies carried over from the old portfolio, each linking to
+    // the write-up itself rather than to a product
     {
       id: "skylark",
       title: "Skylark Drones",
       type: "Case Study",
       description:
         "A go-to-market read on expanding into Australia — market conditions, who they'd be up against, and the sequence I'd bet on.",
-      color: "orange",
+      color: "aqua",
       rotate: -1.5,
       metric: null,
-      url: null,
+      url: "https://drive.google.com/file/d/1FSV-mCmwBhw--xmZWWJTgKln2MAbWML7/view",
     },
     {
       id: "porter",
@@ -150,10 +150,10 @@ export const site = {
       type: "Case Study",
       description:
         "Pulled apart customer lifetime value to find where retention leaked, and proposed the levers most likely to move it.",
-      color: "canary",
+      color: "orange",
       rotate: 2,
       metric: null,
-      url: null,
+      url: "https://drive.google.com/file/d/11aZ5kzmaKFTrKCxIzOLWLyBgq6-NTHGN/view",
     },
   ],
   experience: [
@@ -217,9 +217,8 @@ export const site = {
           "Led a chapter of 15+ members to organize the largest social entrepreneurship competition on campus.",
           "Built strategic partnerships, secured sponsorships, and onboarded 5 judges and 2 speakers to provide guidance and mentorship for participating teams.",
         ],
-        // The phrase inside `bullets` that carries the photos: it gets
-        // underlined, and hovering it is what fans them out. Must appear
-        // verbatim in one of the bullets above or nothing is marked up.
+        // The phrase inside `bullets` that carries the photos — underlined, and
+        // hovering it fans them out. Must appear verbatim in a bullet above.
         highlight: "the largest social entrepreneurship competition",
         // Real chapter photos, resized from assets/source/education/.
         images: [

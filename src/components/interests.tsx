@@ -14,16 +14,8 @@ import {
 } from "@/components/interest-figures";
 import { useSound } from "@/lib/sound-context";
 
-/**
- * Each interest renders a real photographed object when one is available, and
- * falls back to its drawn figure otherwise.
- *
- * To swap in a real object: drop a background-removed PNG at the `photo` path
- * below and change that entry from `null` to the path. Square-ish crops work
- * best — the figure box is square and the art is centred inside it. Nothing
- * else needs changing; the hover scale and the sentence flow are identical
- * either way.
- */
+/** Each interest renders a photographed cut-out when one exists, else its drawn
+ * figure. To swap one in: add a PNG under /public/interests and set `photo`. */
 type Interest = {
   fallback: ComponentType;
   photo: string | null;
@@ -81,16 +73,18 @@ const INTERESTS = {
   },
 } satisfies Record<string, Interest>;
 
-/**
- * One cut-out sitting inline in the sentence. The parent drives a "hover"
- * variant that both scales this up and cues the figure's own animation — the
- * variant name propagates down to the SVG's motion children automatically.
- */
+/** One cut-out inline in the sentence. The parent drives a "hover" variant that
+ * scales it and cues the figure's own animation via variant propagation. */
 function Figure({ kind }: { kind: keyof typeof INTERESTS }) {
   const reduceMotion = useReducedMotion();
   const { play } = useSound();
-  const { fallback: Art, photo, label, href, destination } =
-    INTERESTS[kind] as Interest;
+  const {
+    fallback: Art,
+    photo,
+    label,
+    href,
+    destination,
+  } = INTERESTS[kind] as Interest;
 
   const art = photo ? (
     <Image
@@ -188,11 +182,11 @@ export function Interests() {
         >
           I listen to <Figure kind="vinyl" /> far more music than is strictly
           reasonable, read everything I can find about <Figure kind="rocket" />{" "}
-          startups, count myself a proper <Figure kind="cube" /> cuber, keep more{" "}
-          <Figure kind="sneaker" /> sneakers than my shelves can honestly hold,
-          play <Figure kind="shuttlecock" /> badminton whenever a court is free,
-          and get on a <Figure kind="tailfin" /> plane whenever I can find a
-          reason to.
+          startups, count myself a proper <Figure kind="cube" /> cuber, keep
+          more <Figure kind="sneaker" /> sneakers than my shelves can honestly
+          hold, play <Figure kind="shuttlecock" /> badminton whenever a court is
+          free, and get on a <Figure kind="tailfin" /> plane whenever I can find
+          a reason to.
         </motion.p>
       </div>
     </section>

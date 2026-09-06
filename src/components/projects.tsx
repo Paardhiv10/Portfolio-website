@@ -6,9 +6,8 @@ import { GrainOverlay } from "@/components/grain-overlay";
 import { site } from "@/content/site";
 import { useSound } from "@/lib/sound-context";
 
-// The notes run on three colours and no more. Keying this off the data's own
-// union rather than `string` means adding a fourth to site.ts is a type error
-// here instead of a note that silently renders with no background.
+// Keyed off the data's own union rather than `string`, so a fourth colour in
+// site.ts is a type error here instead of a note with no background.
 const CARD_BG: Record<(typeof site.projects)[number]["color"], string> = {
   canary: "bg-canary text-mirage",
   aqua: "bg-aqua text-mirage",
@@ -17,12 +16,8 @@ const CARD_BG: Record<(typeof site.projects)[number]["color"], string> = {
 
 type Project = (typeof site.projects)[number];
 
-// The mat's printed surface. The board is 60 units wide however wide it
-// renders, so the ruler always runs edge to edge and the grid squares stay
-// square — the unit is derived from a measured width rather than fixed, and
-// everything is drawn in real pixels rather than a stretched viewBox. A
-// stretched one would flatten the protractor's arc into an ellipse and
-// throw every angle off the moment the mat's aspect ratio changed.
+// The mat is 60 units wide however wide it renders, measured rather than fixed,
+// and drawn in real pixels — a stretched viewBox would flatten the arc.
 const MAT_UNITS_W = 60;
 /** Gap between the mat's edge and the ruled area, where the rulers sit. */
 const MAT_INSET = 34;
@@ -203,18 +198,16 @@ function MatPrint({ width, height }: { width: number; height: number }) {
 /** Corner peel, in px: how much is turned up at rest and under the cursor. */
 const PEEL_REST = 20;
 const PEEL_HOVER = 54;
-// The cut runs along x + y = width + height - peel, so the sheet is gone once
-// peel clears width + height. Comfortably past the largest note at any column
-// count, which is what makes the click read as the note being peeled off.
+// The cut runs along x + y = w + h - peel, so the sheet is gone once peel
+// clears w + h. Well past the largest note, which is what sells the peel.
 const PEEL_AWAY = 1000;
 /** How long the sheet takes to lift clear of the mat. */
 const PEEL_AWAY_MS = 1000;
 /** A beat after the peel lands before the tab opens, so the two don't collide.
  * Still far inside the click's 5s activation window, so no popup block. */
 const OPEN_AFTER_MS = PEEL_AWAY_MS + 220;
-/** The hover peel wants a snappy ease-out, but that curve spends 80% of its
- * time almost still — on the long peel it reads as a flick, then a wait. This
- * one is paced evenly, so the sheet actually looks like it is being pulled. */
+/** The hover ease-out spends most of its time nearly still, so on the long peel
+ * it reads as a flick then a wait. This curve is paced evenly. */
 const PEEL_AWAY_EASE = "cubic-bezier(0.5, 0.02, 0.35, 1)";
 
 function StickyNote({ project, index }: { project: Project; index: number }) {
@@ -223,10 +216,8 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
   const [peelingAway, setPeelingAway] = useState(false);
   const url = project.url;
 
-  // One number drives both the cut and the flap that fills it, so the two can
-  // never disagree mid-animation. A CSS transition rather than a spring: the
-  // cut corner and the flap are separate properties on separate elements, and
-  // a shared easing keeps them locked together frame for frame.
+  // One number drives both the cut and the flap, so they cannot disagree. A CSS
+  // transition, not a spring: a shared easing keeps them locked frame for frame.
   const peel = peelingAway ? PEEL_AWAY : lifted ? PEEL_HOVER : PEEL_REST;
   const ease = peelingAway ? PEEL_AWAY_EASE : "cubic-bezier(0.22, 1, 0.36, 1)";
   const peelMs = peelingAway ? PEEL_AWAY_MS : 420;
@@ -250,9 +241,8 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
   const note = (
     <article
       style={{
-        // The corner is genuinely cut out of the sheet rather than covered by
-        // a triangle of flat colour — that way the mat's grid and grain show
-        // through the gap, which is what sells it as paper on a surface.
+        // Genuinely cut out rather than covered with flat colour, so the mat's grid
+        // shows through the gap — that is what sells it as paper on a surface.
         clipPath: `polygon(0 0, 100% 0, 100% calc(100% - ${peel}px), calc(100% - ${peel}px) 100%, 0 100%)`,
         transition: `clip-path ${peelMs}ms ${ease}`,
       }}
@@ -282,9 +272,8 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         }}
       />
 
-      {/* The eyebrow stays mono — it reads as a printed index stamp on the
-            note, and keeps the label system consistent across every section.
-            Everything hand-written on the note is marker. */}
+      {/* The eyebrow stays mono: it reads as a printed index stamp and keeps the label
+          system consistent. Everything hand-written on the note is marker. */}
       {/* The arrow is the only thing marking a note as clickable — without
             it a linked note and a plain one look identical until you hover. */}
       <p className="relative mb-5 font-mono text-[11px] uppercase tracking-widest opacity-60">
@@ -311,9 +300,8 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         {project.description}
       </p>
 
-      {/* the turned-up flap, sitting just inside the cut and showing the
-            underside of the sheet: shadowed along the crease, catching light
-            at the tip */}
+      {/* The turned-up flap just inside the cut, showing the sheet's underside —
+          shadowed along the crease, catching light at the tip. */}
       <div
         aria-hidden
         style={{
@@ -323,11 +311,8 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         }}
         className="pointer-events-none absolute bottom-0 right-0"
       >
-        {/* Folding the corner up maps it onto the triangle nearest the note's
-              middle, so this is the top-left half of the box — the bottom-right
-              half is the hole the sheet's clip-path already cut. The crease is
-              the hypotenuse (dark, lying flat) and the tip is the free corner
-              (light, lifted highest). */}
+        {/* Folding the corner up maps it to the top-left half of the box; the other half
+            is the hole the clip-path cut. Crease is the hypotenuse, tip the free corner. */}
         <div
           style={{
             clipPath: "polygon(0 0, 100% 0, 0 100%)",
@@ -353,9 +338,8 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         play("hover");
       }}
       onHoverEnd={() => setLifted(false)}
-      // drop-shadow rather than box-shadow: box-shadow traces the element's
-      // box, so it would draw a square corner over the cut-away one. The
-      // filter follows the clipped silhouette instead.
+      // drop-shadow, not box-shadow: box-shadow traces the element's box and would
+      // draw a square corner over the cut-away one.
       className={`relative transition-[filter] duration-300 ${
         lifted
           ? "[filter:drop-shadow(0_20px_24px_rgba(0,0,0,0.42))]"

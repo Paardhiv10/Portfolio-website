@@ -32,9 +32,8 @@ export default function SneakersPage() {
             key={s.id}
             className="group flex flex-col items-center gap-6 sm:flex-row sm:gap-10"
           >
-            {/* just the shoe — no card, no frame. The shots are on plain
-                white, and multiply-blending that into the page's cream lets
-                it sit directly on the page instead of inside a box. */}
+            {/* Just the shoe, no frame. The shots are on white, and multiply-blending that
+                into the page's cream sits it on the page rather than in a box. */}
             <div className="relative h-24 w-40 shrink-0 sm:h-28 sm:w-48">
               {s.photo ? (
                 <Image
@@ -51,9 +50,8 @@ export default function SneakersPage() {
               )}
             </div>
 
-            {/* w-full so the block stops shrink-wrapping its longest line —
-                that made each card start at its own x. Centred on phones to
-                match the shoe above it, left-aligned once it's a row. */}
+            {/* w-full so the block stops shrink-wrapping its longest line, which made each
+                card start at its own x. Centred on phones, left-aligned once it's a row. */}
             <div className="w-full text-center sm:flex-1 sm:text-left">
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-mirage/40">
                 {s.brand}

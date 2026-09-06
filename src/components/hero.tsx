@@ -6,9 +6,8 @@ import { GrainOverlay } from "@/components/grain-overlay";
 import { ScrambleText } from "@/components/scramble-text";
 import { site } from "@/content/site";
 
-// \b on both ends so `product` can't match inside `production`. Plain word
-// boundaries rather than lookbehind: a lookbehind is a syntax error in older
-// Safari, which would throw here at module scope and take the page with it.
+// \b on both ends so `product` can't match inside `production`. Not lookbehind:
+// that is a syntax error in older Safari and would take the page down on load.
 const HIGHLIGHT_RE = new RegExp(
   `\\b(${site.hero.highlights
     .map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
@@ -55,33 +54,23 @@ export function Hero() {
     >
       <GrainOverlay opacity={0.045} />
 
-      {/* min-height mirrors the section's pt-28 exactly, and there is no
-          bottom padding, so the portrait ends flush with the fold at every
-          breakpoint — stacked on mobile, anchored right from xl up.
-          justify-end below xl is what keeps it flush: the portrait is in flow
-          there, and centring would split the leftover space above AND below
-          it, floating it off the section's bottom edge. From xl the portrait
-          is absolutely positioned at bottom-0, so it leaves the flow entirely
-          and the text block goes back to being vertically centred. */}
+      {/* min-height mirrors pt-28 and there's no bottom padding, so the portrait ends
+          flush with the fold: justify-end below xl, absolute at bottom-0 from xl. */}
       <div className="relative mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-6xl flex-col justify-end xl:justify-center">
-        {/* text — one column, one measure. The heading and every paragraph
-            share `max-w-xl` so the block reads as a single justified-looking
-            box rather than a heading with a narrower column hanging off it. */}
+        {/* One column, one measure: heading and paragraphs share max-w-xl so the block
+            reads as a single box rather than a heading with a column hanging off it. */}
         <div className="max-w-xl">
           <motion.h1
             {...fadeUp(0)}
-            // Only a little larger than the body: the reference the copy is
-            // modelled on keeps the whole block near one size, so the greeting
-            // opens the paragraph rather than shouting over it.
+            // Only a little larger than the body, so the greeting opens the paragraph
+            // rather than shouting over it.
             className="font-display text-[min(9vw,2.25rem)] leading-tight tracking-tight sm:text-4xl"
           >
             <ScrambleText text={site.hero.greeting} />
           </motion.h1>
 
-          {/* Justified with hyphenation so every line but the last reaches the
-              same right edge — that ragged edge is what read as empty space.
-              Only justify from sm up: on a phone the measure is too narrow to
-              set without opening gaps between words. */}
+          {/* Justified with hyphenation so every line but the last reaches the same edge.
+              Only from sm up — a phone measure is too narrow to set without word gaps. */}
           <div className="mt-8 space-y-5">
             {site.hero.bio.map((para, i) => (
               <motion.p
@@ -101,9 +90,8 @@ export function Hero() {
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
-          // flex+justify-center centres the <pre> itself below xl — it has an
-          // intrinsic width from its font-size, so without this it hugs the
-          // left of the wrapper and leaves a lopsided gap on the right
+          // flex+justify-center centres the <pre> below xl: it has an intrinsic width,
+          // so without this it hugs the left and leaves a lopsided gap.
           className="mx-auto mt-10 flex w-full max-w-[500px] justify-center xl:absolute xl:right-[calc(2rem-(100vw-100%)/2)] xl:bottom-0 xl:mx-0 xl:mt-0 xl:block xl:w-auto xl:max-w-none"
         >
           <AsciiPortrait />

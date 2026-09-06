@@ -6,12 +6,12 @@ import { tracks } from "@/content/collections";
 export const metadata: Metadata = {
   title: "Music",
   description:
-    "The crate: records on heavy rotation. Drop one on the platter and it plays.",
+    "The crate: records on heavy rotation. Drop one on the platter and hit play.",
   alternates: { canonical: "/music" },
   openGraph: {
     title: "Music — Paardhiv Sarakam",
     description:
-      "The crate: records on heavy rotation. Drop one on the platter and it plays.",
+      "The crate: records on heavy rotation. Drop one on the platter and hit play.",
     url: "/music",
     type: "website",
   },
@@ -22,7 +22,7 @@ export default function MusicPage() {
     <CollectionPage
       eyebrow="On Rotation"
       title="The Crate"
-      intro="Far more music than is strictly reasonable. Pull a record out of the crate, drop it on the platter, and it plays."
+      intro="Far more music than is strictly reasonable. Pull a record out of the crate, drop it on the platter, and hit play."
     >
       <Turntable tracks={tracks} />
     </CollectionPage>

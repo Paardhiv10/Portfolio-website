@@ -21,9 +21,8 @@ export function Nav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Keyed off intent, not off a colour class — the footer is deep blue
-      // rather than black, and a selector on `.bg-black` would silently stop
-      // flipping the nav the moment a dark section is recoloured.
+      // Keyed off intent, not a colour class — a selector on `.bg-black` would stop
+      // flipping the nav the moment a dark section were recoloured.
       const darkSections = document.querySelectorAll("[data-nav-dark]");
       const navTop = 16;
       const navBottom = 72;
@@ -53,17 +52,14 @@ export function Nav() {
       <div className="mx-auto w-full max-w-5xl">
         <div className="relative h-14">
           <div
-            // Full width on phones — hugging the content there leaves a stub
-            // of a pill holding just the logo and two buttons. From md up the
-            // links are in it, so it can shrink to fit again.
+            // Full width on phones, where hugging the content leaves a stub of a pill.
+            // From md the links sit inside it, so it can shrink to fit again.
             className={`relative mx-auto flex h-14 w-full items-center justify-between gap-6 rounded-full border px-6 transition-colors duration-300 md:w-fit md:gap-10 md:px-7 ${
               isDarkBg ? "border-white/25" : "border-white/40"
             } ${textColor}`}
             style={{
-              // A 20% white glass over the deep-blue footer lightens into a
-              // mid-blue that white nav text barely clears. Thinning the glass
-              // over dark sections keeps the panel behind it dark enough to
-              // read against.
+              // 20% white glass over the deep-blue footer lightens to a mid-blue that white
+              // text barely clears, so the glass thins over dark sections.
               background: isDarkBg
                 ? "rgba(255, 255, 255, 0.10)"
                 : "rgba(255, 255, 255, 0.2)",
@@ -204,9 +200,8 @@ export function Nav() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.22, ease: "easeOut" }}
-              // Opaque on purpose: this panel only exists while the menu is
-              // open, so it gains nothing from blur and would only reintroduce
-              // the filter's instability.
+              // Opaque on purpose: it only exists while the menu is open, so blur buys
+              // nothing and would only reintroduce the filter's instability.
               className={`mt-2 rounded-2xl border border-white/40 transition-colors duration-300 md:hidden ${textColor}`}
               style={{
                 background:

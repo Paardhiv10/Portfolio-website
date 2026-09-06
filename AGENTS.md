@@ -16,15 +16,13 @@ no `--distDir` flag, so there is no way to build around a running one.
 
 ## Outstanding placeholders
 
-Grep for `REPLACE_ME`. Currently:
+None left — `REPLACE_ME` no longer appears in `src/`. Sneakers, records and
+flights all carry real entries.
 
-- `src/content/collections.ts` — every record entry. Sneakers and flights are
-  both done, real names/colourways/photos included, so there is nothing left
-  to fill in there.
-
-These are deliberate: the pages need shape to lay out, and inventing a
-collection or a flight history would put false claims on a portfolio. Fill them
-in rather than deleting them.
+What is still missing is files, not copy: `audio` and `spotify` are `null` on
+every record, and the interest cut-outs below have no images. Those nulls are
+deliberate — each page renders around one rather than inventing a link or a
+stat. Fill them in rather than deleting the field.
 
 ## Image directories that are wired but empty
 
@@ -37,6 +35,17 @@ in rather than deleting them.
 
 `public/education/hult/`, `public/education/ecell/` and `public/sneakers/` are
 filled in: real photos, resized from the originals kept in `assets/source/`.
+
+## The graduation stamp
+
+`public/education/grad-stamp.webp` is generated, not hand-made: the portrait in
+`assets/source/education/grad-original.png` cropped, then given a paper border
+with the perforations punched out of the alpha channel. WebP rather than JPEG
+because those notches need transparency — bake a background colour in and the
+stamp gets a visible rectangle the moment the section is recoloured. Keep the
+paper lighter than `--color-cream` or the teeth disappear against the page, and
+keep the CSS `drop-shadow` (not `box-shadow`), which is what makes the scalloped
+edge read at all.
 
 ## Sticky-note metrics
 

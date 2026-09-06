@@ -14,6 +14,17 @@ function viewportPoint(
   return t ? { x: t.clientX, y: t.clientY } : null;
 }
 
+/** Spotify's embed for a track link. A plain iframe on purpose: the embed API
+ * cannot start playback for a logged-out visitor, so Spotify owns the button. */
+function spotifyEmbed(spotify: string | null): string | null {
+  if (!spotify) return null;
+  const id =
+    /open\.spotify\.com\/(?:intl-[a-z]{2}\/)?track\/([A-Za-z0-9]+)/.exec(
+      spotify,
+    );
+  return id ? `https://open.spotify.com/embed/track/${id[1]}` : null;
+}
+
 /** A record, drawn at whatever size its box gives it. */
 function Record({ label, spinning }: { label: string; spinning: boolean }) {
   const reduceMotion = useReducedMotion();
@@ -75,22 +86,24 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
     const el = audioRef.current;
 
     setNowPlaying(track);
-    play("sticky");
 
     if (!track.audio) {
       // Stop any track already playing, since toggle() can't pause one
       // that has no audio.
       el?.pause();
       setPlaying(false);
-      setMessage("No audio file for this one yet.");
+      // Spotify's player below is the playback path when there's no MP3, so
+      // only apologise when there's nothing to play at all.
+      setMessage(
+        spotifyEmbed(track.spotify) ? null : "No audio file for this one yet.",
+      );
       return;
     }
 
     setMessage(null);
     if (!el) return;
     el.src = track.audio;
-    el
-      .play()
+    el.play()
       .then(() => {
         if (gen === landingRef.current) setPlaying(true);
       })
@@ -105,8 +118,7 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
     const el = audioRef.current;
     if (!el || !nowPlaying?.audio) return;
     if (el.paused) {
-      el
-        .play()
+      el.play()
         .then(() => {
           setPlaying(true);
           // Clear the autoplay-blocked hint — the tap it asked for just happened.
@@ -118,6 +130,11 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
       setPlaying(false);
     }
   }
+
+  // Only when there's no MP3 of our own to play.
+  const embed = nowPlaying?.audio
+    ? null
+    : spotifyEmbed(nowPlaying?.spotify ?? null);
 
   return (
     <div className="grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-20">
@@ -136,16 +153,13 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
                 dragElastic={0.14}
                 whileDrag={{ scale: 1.1, zIndex: 50, cursor: "grabbing" }}
                 whileHover={{ y: -6 }}
-                // Drag is the fun path, but it is unusable by keyboard and
-                // fiddly on touch, so the record is also a plain button. The
-                // ref guard stops the click that follows a drag-release from
-                // firing a second time.
+                // Drag is the fun path but unusable by keyboard, so the record is a button
+                // too. The ref guard stops the post-drag click firing a second time.
                 role="button"
                 tabIndex={0}
                 aria-label={`Play ${t.title} by ${t.artist}`}
-                // motion's own tap gesture, not onClick: the drag gesture
-                // preventDefaults pointerdown, which cancels the native click
-                // that would otherwise follow.
+                // motion's tap, not onClick: the drag gesture preventDefaults pointerdown,
+                // which cancels the native click that would otherwise follow.
                 onTap={() => {
                   if (draggedRef.current) return;
                   land(t);
@@ -161,15 +175,8 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
                   play("hover");
                 }}
                 onDragEnd={(event) => {
-                  // Hit-test the pointer against the platter rather than the
-                  // dragged element's box — the record is bigger than the
-                  // spindle and users aim with the cursor.
-                  //
-                  // Deliberately not motion's `info.point`: that is in page
-                  // space, while getBoundingClientRect is viewport space, so
-                  // the two disagree by the scroll offset and the drop silently
-                  // fails on any scrolled page. The native event's clientX/Y is
-                  // unambiguously viewport-relative.
+                  // Hit-test the pointer, not the dragged box — the record is bigger than the
+                  // spindle. clientX/Y, not motion's `info.point`, which is off by the scroll.
                   const p = platterRef.current?.getBoundingClientRect();
                   const point = viewportPoint(event);
                   if (!p || !point) return;
@@ -189,14 +196,18 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
                 // `relative` is load-bearing: z-index (raised by whileDrag) is
                 // ignored on static elements, so the record painted under the deck.
                 className="relative aspect-square cursor-grab touch-none"
-                style={{ filter: "drop-shadow(0 10px 18px rgba(27,29,26,0.28))" }}
+                style={{
+                  filter: "drop-shadow(0 10px 18px rgba(27,29,26,0.28))",
+                }}
               >
                 <Record label={t.label} spinning={false} />
               </motion.div>
-              <p className="mt-3 truncate font-display text-base tracking-tight">
+              {/* Wraps rather than truncating: real titles and band names run
+                  past the 132px sleeve, and a clipped one reads as a bug. */}
+              <p className="mt-3 text-pretty font-display text-base leading-snug tracking-tight">
                 {t.title}
               </p>
-              <p className="truncate font-mono text-[10px] text-mirage/45">
+              <p className="text-pretty font-mono text-[10px] leading-snug text-mirage/45">
                 {t.artist}
               </p>
             </div>
@@ -279,7 +290,19 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
               <p className="font-mono text-[11px] text-mirage/50">
                 {nowPlaying.artist}
               </p>
-              {nowPlaying.spotify && (
+              {/* Spotify is the player only when there's no MP3. `key` remounts
+                  it per track — swapping `src` pushes iframe history entries. */}
+              {embed ? (
+                <iframe
+                  key={embed}
+                  src={embed}
+                  title={`${nowPlaying.title} by ${nowPlaying.artist} on Spotify`}
+                  height={152}
+                  loading="lazy"
+                  allow="encrypted-media; clipboard-write; picture-in-picture"
+                  className="mt-3 w-full rounded-xl border-0"
+                />
+              ) : nowPlaying.spotify ? (
                 <a
                   href={nowPlaying.spotify}
                   target="_blank"
@@ -288,7 +311,7 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
                 >
                   Open in Spotify
                 </a>
-              )}
+              ) : null}
               {message && (
                 <p className="mt-2 font-mono text-[11px] text-mirage/45">
                   {message}

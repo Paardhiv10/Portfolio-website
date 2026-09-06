@@ -9,9 +9,8 @@ import { site } from "@/content/site";
 import { SoundProvider } from "@/lib/sound-context";
 import "./globals.css";
 
-// Carries the whole site — display headings and body copy both. The `opsz`
-// axis is what makes that work: the browser fits the optical size to the
-// rendered size, so the same face stays sturdy at 12px and fine at 13vw.
+// Carries the whole site. The `opsz` axis is why: the browser fits optical size
+// to rendered size, so one face stays right at 12px and at 13vw.
 const sourceSerif = Source_Serif_4({
   variable: "--font-source-serif",
   subsets: ["latin"],
@@ -26,9 +25,8 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
-// Marker hand for the sticky notes only. Shantell Sans is the rare marker face
-// that stays legible in a paragraph — Permanent Marker and friends fall apart
-// below ~20px, and the notes carry real body copy.
+// Marker hand for the sticky notes. Shantell stays legible in a paragraph;
+// Permanent Marker and friends fall apart below ~20px.
 const shantell = Shantell_Sans({
   variable: "--font-shantell",
   subsets: ["latin"],
@@ -80,11 +78,8 @@ export default function RootLayout({
       lang="en"
       className={`${sourceSerif.variable} ${jetbrains.variable} ${shantell.variable} h-full antialiased`}
     >
-      {/* Extensions (Grammarly, password managers) write attributes onto
-          <body> before React hydrates, which React then reports as a
-          mismatch. This only suppresses the warning for this element's own
-          attributes, one level deep — real mismatches inside the tree are
-          still reported. */}
+      {/* Extensions write attributes onto <body> before React hydrates. This suppresses
+          only this element's own attributes; real mismatches inside are still reported. */}
       <body
         suppressHydrationWarning
         className="min-h-full flex flex-col bg-chalk text-mirage"

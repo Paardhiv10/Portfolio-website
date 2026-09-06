@@ -23,10 +23,8 @@ function PhotoFan({
   images: readonly string[];
   label: string;
 }) {
-  // The fan hangs off the phrase, and a phrase late in a line can start far
-  // enough right that the fan runs past the section — which is overflow-hidden,
-  // so the last photo would simply be cut off. Measure once on open and pull it
-  // back inside. useLayoutEffect so the shift lands before the first paint.
+  // The fan hangs off a phrase that can sit far enough right to overflow the
+  // clipped section. Measure once on open and pull it back inside.
   const ref = useRef<HTMLSpanElement>(null);
   const [shift, setShift] = useState(0);
 
@@ -68,13 +66,11 @@ function PhotoFan({
   );
 }
 
-/** A club/role row. The photos hang off one phrase inside the bullets —
- * `highlight` in site.ts — rather than off the role title, so the thing you
- * hover is the thing the photos are of. */
+/** A club/role row. The photos hang off a phrase inside the bullets, not the
+ * role title, so the thing you hover is the thing they are of. */
 function PorItem({ p }: { p: PorEntry }) {
-  // Two separate states, not one: with a single flag, a click while the
-  // pointer was already hovering would toggle the photos straight back off.
-  // Hover drives it for a mouse, pinning for a tap, and either one shows it.
+  // Two flags, not one: with a single one a click while hovering would toggle
+  // the photos straight back off. Hover for a mouse, pin for a tap.
   const [hovered, setHovered] = useState(false);
   const [pinned, setPinned] = useState(false);
   const open = hovered || pinned;
@@ -88,10 +84,8 @@ function PorItem({ p }: { p: PorEntry }) {
     return (
       <>
         {bullet.slice(0, at)}
-        {/* A span rather than a button so the phrase still wraps with the
-            sentence, and `static` below sm so the photos anchor to the row
-            instead of to a wrapped inline box — anchoring to the phrase on a
-            narrow screen throws the fan off the side of the page. */}
+        {/* A span, not a button, so the phrase still wraps with the sentence. `static`
+            below sm anchors the fan to the row, not to a wrapped inline box. */}
         <span
           role="button"
           tabIndex={0}
@@ -137,8 +131,14 @@ function PorItem({ p }: { p: PorEntry }) {
 
       <ul className="mt-4 space-y-2">
         {p.bullets.map((b) => (
-          <li key={b} className="flex gap-2.5 text-base leading-relaxed text-ink/70">
-            <span aria-hidden className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-ink/35" />
+          <li
+            key={b}
+            className="flex gap-2.5 text-base leading-relaxed text-ink/70"
+          >
+            <span
+              aria-hidden
+              className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-ink/35"
+            />
             <span>{renderBullet(b)}</span>
           </li>
         ))}
@@ -169,17 +169,15 @@ export function Education() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.05 }}
-          className="max-w-3xl font-display text-5xl leading-[0.95] tracking-tight sm:text-6xl"
+          // Uncapped: the line wants 853px and the section gives 1152, so a
+          // max-width was the only thing breaking it in two. Wraps on phones.
+          className="font-display text-5xl leading-[0.95] tracking-tight sm:text-6xl"
         >
           I got my degree between these arches
         </motion.h2>
 
-        {/* Top row: art left, photo + copy right. The art column is the wider
-            of the two on purpose — the ASCII grid is 140 glyphs across, and
-            legibility depends on how many pixels each glyph gets. Each column
-            closes with its own rule; the grid stretches them to a shared
-            height, so the two land level and read as one line broken by the
-            gutter. Below lg they fall back to a single stack, art first. */}
+        {/* Art left, photo and copy right. The art column is wider on purpose — the ASCII
+            grid is 140 glyphs across and needs the pixels. Single stack below lg. */}
         <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:gap-16">
           {/* campus, rendered as ASCII so it sits in the same visual language
               as the hero portrait rather than as a pasted photo */}
@@ -194,35 +192,32 @@ export function Education() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="flex flex-col justify-center border-b border-ink/20 pb-12"
           >
-            {/* The source is 1250×1680, so the frame is 3:4 to match. The
-                placeholder here was 4:3, which would have cropped a portrait
-                photo down to a horizontal band through the middle. */}
-            <div className="relative aspect-[3/4] w-full overflow-hidden border border-ink/15 bg-ink/5">
+            {/* No border: the stamp brings its own. drop-shadow follows the
+                scalloped edge; `contain` and the height cap keep it whole. */}
+            <div className="relative mx-auto aspect-[952/1167] w-full max-h-[26rem] max-w-[calc(26rem*952/1167)] sm:max-h-[30rem] sm:max-w-[calc(30rem*952/1167)]">
               <Image
-                src="/education/grad.png"
-                alt="Graduation day"
+                src="/education/grad-stamp.webp"
+                alt="A postage stamp of a young graduate in cap and gown, holding a rolled diploma"
                 fill
-                sizes="(min-width: 1024px) 34vw, 100vw"
-                className="object-cover"
+                // Capped by max-w, so this is a known width, not a share of
+                // the viewport.
+                sizes="(min-width: 640px) 392px, 90vw"
+                className="object-contain [filter:drop-shadow(0_10px_18px_rgba(27,29,26,0.20))]"
               />
             </div>
 
-            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.25em] text-ink/50">
-              Manipal, India
-            </p>
-            <p className="mt-3 text-base leading-relaxed text-ink/65">
-              I graduated from MIT Manipal with an ECE degree, but spent most
-              of my time outside the classroom — in student clubs like Hult
-              Prize and E-Cell, doing a bunch of internships, and building
-              CubeCoast while exploring and learning more about startups.
-              These four years at college have been truly transformational.
+            <p className="mt-6 text-base leading-relaxed text-ink/65">
+              I graduated from MIT Manipal with an ECE degree, but spent most of
+              my time outside the classroom — in student clubs like Hult Prize
+              and E-Cell, doing a bunch of internships, and building CubeCoast
+              while exploring and learning more about startups. These four years
+              at college have been truly transformational.
             </p>
           </motion.div>
         </div>
 
-        {/* positions of responsibility — stacked, each spanning the section
-            end to end. The hover photos float above the title instead of
-            needing reserved space of their own. */}
+        {/* Positions of responsibility, stacked end to end. The hover photos float above
+            the row rather than needing reserved space. */}
         <div className="mt-14">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

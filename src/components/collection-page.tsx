@@ -4,11 +4,8 @@ import { GrainOverlay } from "@/components/grain-overlay";
 import { Nav } from "@/components/nav";
 import { SiteFooter } from "@/components/site-footer";
 
-/**
- * Shared shell for the three interest pages, so /sneakers, /music and /travel
- * open into the same room the Interests section belongs to rather than looking
- * like a different site.
- */
+/** Shared shell for /sneakers, /music and /travel, so they open into the same
+ * room the Interests section belongs to rather than looking like another site. */
 export function CollectionPage({
   eyebrow,
   title,

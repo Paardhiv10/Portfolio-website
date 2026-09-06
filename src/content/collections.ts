@@ -1,11 +1,5 @@
-/**
- * Everything the three interest pages render.
- *
- * Nothing in here is invented — the entries below are placeholders in the same
- * REPLACE_ME style the rest of the content file uses, so the pages have shape
- * to lay out without ever claiming something untrue. Swap the values and drop
- * the matching files into /public and the pages fill themselves in.
- */
+/** Everything the three interest pages render. Nothing here is invented — a null
+ * means a file or link does not exist yet, and each page renders around it. */
 
 export type Sneaker = {
   id: string;
@@ -70,38 +64,48 @@ export type Track = {
   label: string;
 };
 
+// Each `spotify` id is the original studio cut, not a remix or live version,
+// and was opened and checked against its page title before being pasted here.
 export const tracks: Track[] = [
   {
-    id: "t1",
-    title: "REPLACE_ME",
-    artist: "REPLACE_ME",
+    id: "durga",
+    title: "Durga",
+    artist: "Advaita",
     audio: null,
-    spotify: null,
+    spotify: "https://open.spotify.com/track/5RurYlUMMktRU3sOJbSZB2",
     label: "#ff3f1a",
   },
   {
-    id: "t2",
-    title: "REPLACE_ME",
-    artist: "REPLACE_ME",
+    id: "vishnu",
+    title: "Vishnu",
+    artist: "Peter Cat Recording Co.",
     audio: null,
-    spotify: null,
+    spotify: "https://open.spotify.com/track/416JjjLmrkcvsFVzSf9B9E",
     label: "#44797f",
   },
   {
-    id: "t3",
-    title: "REPLACE_ME",
-    artist: "REPLACE_ME",
+    id: "wonderful-world",
+    title: "What a Wonderful World",
+    artist: "Louis Armstrong",
     audio: null,
-    spotify: null,
+    spotify: "https://open.spotify.com/track/29U7stRjqHU6rMiS8BfaI9",
     label: "#fcf75e",
   },
   {
-    id: "t4",
-    title: "REPLACE_ME",
-    artist: "REPLACE_ME",
+    id: "i-have-the-touch",
+    title: "I Have the Touch",
+    artist: "Peter Gabriel",
     audio: null,
-    spotify: null,
+    spotify: "https://open.spotify.com/track/2grqilf5SUJFx0WYMFpaOO",
     label: "#97d6df",
+  },
+  {
+    id: "wavin-flag",
+    title: "Wavin' Flag",
+    artist: "K'naan",
+    audio: null,
+    spotify: "https://open.spotify.com/track/0zREtnLmVnt8KUJZZbSdla",
+    label: "#16309b",
   },
 ];
 
