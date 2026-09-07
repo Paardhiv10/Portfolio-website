@@ -6,8 +6,7 @@ import { GrainOverlay } from "@/components/grain-overlay";
 import { ScrambleText } from "@/components/scramble-text";
 import { site } from "@/content/site";
 
-// \b on both ends so `product` can't match inside `production`. Not lookbehind:
-// that is a syntax error in older Safari and would take the page down on load.
+// Word boundaries, not lookbehind — older Safari throws on lookbehind.
 const HIGHLIGHT_RE = new RegExp(
   `\\b(${site.hero.highlights
     .map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
@@ -15,8 +14,7 @@ const HIGHLIGHT_RE = new RegExp(
   "g",
 );
 
-// `as const` narrows the array to its literal members, which would reject a
-// plain string lookup below.
+// `as const` narrows to literals, which would reject a plain string lookup.
 const HIGHLIGHTS: readonly string[] = site.hero.highlights;
 
 /** Splits a paragraph so the crucial phrases can carry the accent underline. */
@@ -54,23 +52,19 @@ export function Hero() {
     >
       <GrainOverlay opacity={0.045} />
 
-      {/* min-height mirrors pt-28 and there's no bottom padding, so the portrait ends
-          flush with the fold: justify-end below xl, absolute at bottom-0 from xl. */}
+      {/* min-height mirrors pt-28, so the portrait ends flush with the fold. */}
       <div className="relative mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-6xl flex-col justify-end xl:justify-center">
-        {/* One column, one measure: heading and paragraphs share max-w-xl so the block
-            reads as a single box rather than a heading with a column hanging off it. */}
+        {/* One measure for heading and paragraphs, so the block reads as one box. */}
         <div className="max-w-xl">
           <motion.h1
             {...fadeUp(0)}
-            // Only a little larger than the body, so the greeting opens the paragraph
-            // rather than shouting over it.
+            // Only a little larger than the body: it opens the paragraph, not shouts over it.
             className="font-display text-[min(9vw,2.25rem)] leading-tight tracking-tight sm:text-4xl"
           >
             <ScrambleText text={site.hero.greeting} />
           </motion.h1>
 
-          {/* Justified with hyphenation so every line but the last reaches the same edge.
-              Only from sm up — a phone measure is too narrow to set without word gaps. */}
+          {/* Justified from sm up; a phone measure is too narrow to set without gaps. */}
           <div className="mt-8 space-y-5">
             {site.hero.bio.map((para, i) => (
               <motion.p
@@ -84,14 +78,12 @@ export function Hero() {
           </div>
         </div>
 
-        {/* ascii portrait — in flow on small screens; on desktop it stands on
-            the bottom edge of the fold, anchored to the right of the grid */}
+        {/* ASCII portrait: in flow on phones, standing on the fold from xl up. */}
         <motion.div
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
-          // flex+justify-center centres the <pre> below xl: it has an intrinsic width,
-          // so without this it hugs the left and leaves a lopsided gap.
+          // Centres the <pre> below xl; it has an intrinsic width and would hug left.
           className="mx-auto mt-10 flex w-full max-w-[500px] justify-center xl:absolute xl:right-[calc(2rem-(100vw-100%)/2)] xl:bottom-0 xl:mx-0 xl:mt-0 xl:block xl:w-auto xl:max-w-none"
         >
           <AsciiPortrait />

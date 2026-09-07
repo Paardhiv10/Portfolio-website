@@ -1,5 +1,4 @@
-/** Everything the three interest pages render. Nothing here is invented — a null
- * means a file or link does not exist yet, and each page renders around it. */
+/** Everything the interest pages render; a null means the file is not there yet. */
 
 export type Sneaker = {
   id: string;
@@ -64,8 +63,7 @@ export type Track = {
   label: string;
 };
 
-// Each `spotify` id is the original studio cut, not a remix or live version,
-// and was opened and checked against its page title before being pasted here.
+// Each `spotify` id is the original studio cut, checked against its page title.
 export const tracks: Track[] = [
   {
     id: "durga",

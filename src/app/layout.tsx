@@ -9,8 +9,7 @@ import { site } from "@/content/site";
 import { SoundProvider } from "@/lib/sound-context";
 import "./globals.css";
 
-// Carries the whole site. The `opsz` axis is why: the browser fits optical size
-// to rendered size, so one face stays right at 12px and at 13vw.
+// One face for the whole site; the `opsz` axis keeps it right at 12px and 13vw.
 const sourceSerif = Source_Serif_4({
   variable: "--font-source-serif",
   subsets: ["latin"],
@@ -25,8 +24,7 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
-// Marker hand for the sticky notes. Shantell stays legible in a paragraph;
-// Permanent Marker and friends fall apart below ~20px.
+// Marker hand for the sticky notes; most marker faces die below ~20px.
 const shantell = Shantell_Sans({
   variable: "--font-shantell",
   subsets: ["latin"],
@@ -38,8 +36,7 @@ const DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://paardhiv.com"),
-  // The template gives every child page a consistent suffix, so a page only
-  // has to declare its own name.
+  // Gives every child page a consistent suffix, so each declares only its name.
   title: {
     default: "Paardhiv Sarakam — Software Engineer",
     template: "%s — Paardhiv Sarakam",
@@ -74,12 +71,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // Next 16 stopped overriding `scroll-behavior: smooth`; this asks for it back.
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${sourceSerif.variable} ${jetbrains.variable} ${shantell.variable} h-full antialiased`}
     >
-      {/* Extensions write attributes onto <body> before React hydrates. This suppresses
-          only this element's own attributes; real mismatches inside are still reported. */}
+      {/* Extensions write to <body> before hydration; this suppresses only that. */}
       <body
         suppressHydrationWarning
         className="min-h-full flex flex-col bg-chalk text-mirage"

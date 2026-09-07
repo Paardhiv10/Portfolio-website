@@ -21,8 +21,7 @@ export function Nav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Keyed off intent, not a colour class — a selector on `.bg-black` would stop
-      // flipping the nav the moment a dark section were recoloured.
+      // Keyed off intent, not a colour class, so recolouring cannot break it.
       const darkSections = document.querySelectorAll("[data-nav-dark]");
       const navTop = 16;
       const navBottom = 72;
@@ -52,14 +51,12 @@ export function Nav() {
       <div className="mx-auto w-full max-w-5xl">
         <div className="relative h-14">
           <div
-            // Full width on phones, where hugging the content leaves a stub of a pill.
-            // From md the links sit inside it, so it can shrink to fit again.
+            // Full width on phones; from md the links are inside and it can shrink.
             className={`relative mx-auto flex h-14 w-full items-center justify-between gap-6 rounded-full border px-6 transition-colors duration-300 md:w-fit md:gap-10 md:px-7 ${
               isDarkBg ? "border-white/25" : "border-white/40"
             } ${textColor}`}
             style={{
-              // 20% white glass over the deep-blue footer lightens to a mid-blue that white
-              // text barely clears, so the glass thins over dark sections.
+              // The glass thins over dark sections so white nav text still clears it.
               background: isDarkBg
                 ? "rgba(255, 255, 255, 0.10)"
                 : "rgba(255, 255, 255, 0.2)",
@@ -146,8 +143,7 @@ export function Nav() {
                 )}
               </button>
 
-              {/* A plain anchor, not next/link: the resume lives on Drive, so
-                  it opens in its own tab instead of dropping the portfolio. */}
+              {/* Plain anchor: the resume is on Drive, so it opens in its own tab. */}
               <a
                 href={site.resumeHref}
                 target="_blank"
@@ -200,8 +196,7 @@ export function Nav() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.22, ease: "easeOut" }}
-              // Opaque on purpose: it only exists while the menu is open, so blur buys
-              // nothing and would only reintroduce the filter's instability.
+              // Opaque: it only lives while the menu is open, so blur buys nothing.
               className={`mt-2 rounded-2xl border border-white/40 transition-colors duration-300 md:hidden ${textColor}`}
               style={{
                 background:

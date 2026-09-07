@@ -3,28 +3,24 @@ export const site = {
   role: "Software Engineer",
   location: "India",
   email: "paardhiv01@gmail.com",
-  // External now, so the nav opens it in a new tab. `?usp=sharing` is stripped —
-  // it is Drive's share-source marker, not needed to view the file.
+  // External now, so the nav opens a new tab; `?usp=sharing` is not needed.
   resumeHref:
     "https://drive.google.com/file/d/1IErAfhFTDkvlHoApfqy5gtW1L3Ez1BMu/view",
-  // Carried over from the pre-rebuild paardhiv.com, where these lived as
-  // window.location assignments in script.js rather than as hrefs.
+  // Carried over from the pre-rebuild site, where these were script.js jumps.
   social: {
     github: "https://github.com/Paardhiv10",
     linkedin: "https://in.linkedin.com/in/paardhiv-sarakam-05b8aa204",
     twitter: "https://x.com/PaardhivS",
   },
   hero: {
-    // The greeting is the whole heading now — the full name still lives in
-    // `name` for metadata and the JSON-LD.
+    // The heading is the greeting now; `name` still holds the full name.
     greeting: "Hi, I'm Paardhiv",
     bio: [
       "I like building things from 0→1 — the kind that make complicated problems feel simple. I start with a messy problem, work out how people actually experience it, and turn it into something useful.",
       "That means staying with it end to end — the first question, the rough idea, the technical decisions, the build, and the day someone actually uses it. The point of all of it is to make something people want.",
       "I'm most curious about AI, product, and the place where technology meets real problems. I learn by building — starting with a blank page, figuring it out, then constantly finding ways to make it better.",
     ],
-    // Phrases lifted out of `bio` and given an accent underline. Each must appear
-    // verbatim above or nothing is marked up.
+    // Underlined phrases; each must appear in `bio` verbatim or nothing marks up.
     highlights: ["0→1", "make something people want", "AI", "product"],
   },
   algorithm: {
@@ -72,8 +68,7 @@ export const site = {
       },
     ],
   },
-  // `metric` and `url` are both optional: null means no real figure and no link,
-  // and the note renders fine without either rather than inventing one.
+  // `metric` and `url` are optional; a null renders fine rather than faking one.
   projects: [
     {
       id: "wca-extension",
@@ -117,7 +112,7 @@ export const site = {
         "Learn cube algorithms and track which ones have actually stuck, puzzle by puzzle. Vibe-coded and shipped — 190+ visitors in 90 days with a high-engagement 4m 1s average session.",
       color: "canary",
       rotate: -1,
-      metric: { value: "4m 1s", label: "avg. session" },
+      metric: { value: "4m+", label: "avg. session" },
       url: "https://cubealgs.lovable.app/",
     },
     {
@@ -131,8 +126,7 @@ export const site = {
       metric: null,
       url: "https://cubeclash.thecubingcompany.com/",
     },
-    // the case studies carried over from the old portfolio, each linking to
-    // the write-up itself rather than to a product
+    // Case studies from the old portfolio; each links to the write-up itself.
     {
       id: "skylark",
       title: "Skylark Drones",
@@ -213,12 +207,9 @@ export const site = {
         org: "Hult Prize, MAHE",
         role: "Head of Corporate Relations",
         dates: "Sep 2022 — Mar 2023",
-        bullets: [
-          "Led a chapter of 15+ members to organize the largest social entrepreneurship competition on campus.",
-          "Built strategic partnerships, secured sponsorships, and onboarded 5 judges and 2 speakers to provide guidance and mentorship for participating teams.",
-        ],
-        // The phrase inside `bullets` that carries the photos — underlined, and
-        // hovering it fans them out. Must appear verbatim in a bullet above.
+        summary:
+          "Ran the campus chapter of the largest social entrepreneurship competition — 15+ members, plus the sponsors, judges and speakers behind it.",
+        // The phrase that carries the photos; must appear in `summary` verbatim.
         highlight: "the largest social entrepreneurship competition",
         // Real chapter photos, resized from assets/source/education/.
         images: [
@@ -231,11 +222,8 @@ export const site = {
         org: "E-Cell, MIT Manipal",
         role: "Startup Development Executive",
         dates: "Aug 2021 — Oct 2022",
-        bullets: [
-          "Worked as a Startup Development Executive to inculcate the spirit of entrepreneurship within the student community through greater awareness.",
-          "Helped over 10+ student startups in validating their ideas.",
-          "Collaborated with other executives of different domains and managed complex projects from start to finish.",
-        ],
+        summary:
+          "Helped 10+ student startups validate their ideas, and worked to grow the appetite for building within the student community.",
         highlight: "student community",
         images: [
           "/education/ecell/1.jpg",

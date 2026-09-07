@@ -14,8 +14,7 @@ function viewportPoint(
   return t ? { x: t.clientX, y: t.clientY } : null;
 }
 
-/** Spotify's embed for a track link. A plain iframe on purpose: the embed API
- * cannot start playback for a logged-out visitor, so Spotify owns the button. */
+/** Spotify's embed: a plain iframe, since the API cannot start a logged-out play. */
 function spotifyEmbed(spotify: string | null): string | null {
   if (!spotify) return null;
   const id =
@@ -70,8 +69,7 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
   const [playing, setPlaying] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  // One <audio> element reused across records, torn down on unmount so a track
-  // can't outlive the page.
+  // One <audio> reused across records, torn down so none outlives the page.
   useEffect(() => {
     const el = audioRef.current;
     return () => {
@@ -80,20 +78,17 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
   }, []);
 
   function land(track: Track) {
-    // Bumped on every landing so a stale play() rejection (from swapping
-    // `src` mid-flight) can't overwrite a track that's now playing fine.
+    // Bumped per landing, so a stale play() rejection cannot clobber a live track.
     const gen = ++landingRef.current;
     const el = audioRef.current;
 
     setNowPlaying(track);
 
     if (!track.audio) {
-      // Stop any track already playing, since toggle() can't pause one
-      // that has no audio.
+      // Stop whatever is playing; toggle() cannot pause a track with no audio.
       el?.pause();
       setPlaying(false);
-      // Spotify's player below is the playback path when there's no MP3, so
-      // only apologise when there's nothing to play at all.
+      // Only apologise when there is no Spotify player to fall back on either.
       setMessage(
         spotifyEmbed(track.spotify) ? null : "No audio file for this one yet.",
       );
@@ -137,11 +132,99 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
     : spotifyEmbed(nowPlaying?.spotify ?? null);
 
   return (
-    <div className="grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-20">
+    <div className="flex flex-col gap-12">
+      {/* The player leads: reaching it should not mean scrolling past the crate. */}
+      <div>
+        <div
+          ref={platterRef}
+          className="sticky top-24 z-20 -mx-6 max-w-lg bg-cream px-6 pb-4 sm:-mx-10 sm:px-10 lg:static lg:mx-0 lg:px-0"
+        >
+          <div className="min-h-[76px]">
+            {nowPlaying ? (
+              <>
+                <div className="flex items-center gap-4">
+                  {/* All that is left of the deck: it spins whenever audio runs. */}
+                  <div
+                    onClick={toggle}
+                    // Only a control with a local MP3 — Spotify owns its own button.
+                    {...(nowPlaying.audio
+                      ? {
+                          role: "button" as const,
+                          tabIndex: 0,
+                          "aria-label": playing
+                            ? `Pause ${nowPlaying.title}`
+                            : `Play ${nowPlaying.title}`,
+                          onKeyDown: (e: React.KeyboardEvent) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              toggle();
+                            }
+                          },
+                        }
+                      : {})}
+                    className={`h-16 w-16 shrink-0 sm:h-20 sm:w-20 ${nowPlaying.audio ? "cursor-pointer" : ""}`}
+                  >
+                    <Record label={nowPlaying.label} spinning={playing} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-orange">
+                      {playing ? "Now playing" : "Cued"}
+                    </p>
+                    <p className="mt-1 font-display text-2xl tracking-tight">
+                      {nowPlaying.title}
+                    </p>
+                    <p className="font-mono text-[11px] text-mirage/50">
+                      {nowPlaying.artist}
+                    </p>
+                  </div>
+                </div>
+                {/* `key` remounts per track; swapping `src` pushes iframe history entries. */}
+                {embed ? (
+                  <iframe
+                    key={embed}
+                    src={embed}
+                    title={`${nowPlaying.title} by ${nowPlaying.artist} on Spotify`}
+                    height={152}
+                    loading="lazy"
+                    // Mobile blocks playback in a cross-origin frame without `autoplay`.
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    className="mt-3 w-full rounded-xl border-0"
+                  />
+                ) : nowPlaying.spotify ? (
+                  <a
+                    href={nowPlaying.spotify}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-block border-b border-mirage/25 font-mono text-[11px] text-mirage/55 transition-colors hover:border-orange hover:text-orange"
+                  >
+                    Open in Spotify
+                  </a>
+                ) : null}
+                {message && (
+                  <p className="mt-2 font-mono text-[11px] text-mirage/45">
+                    {message}
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="font-mono text-[11px] text-mirage/40">
+                The platter is empty.
+              </p>
+            )}
+          </div>
+        </div>
+
+        <audio
+          ref={audioRef}
+          onEnded={() => setPlaying(false)}
+          onPause={() => setPlaying(false)}
+          onPlay={() => setPlaying(true)}
+        />
+      </div>
       {/* the crate */}
       <div>
         <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.25em] text-mirage/40">
-          Drag a record onto the platter — or just click one
+          Drop a record on the player — or just click one
         </p>
 
         <div className="flex flex-wrap gap-8">
@@ -153,13 +236,11 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
                 dragElastic={0.14}
                 whileDrag={{ scale: 1.1, zIndex: 50, cursor: "grabbing" }}
                 whileHover={{ y: -6 }}
-                // Drag is the fun path but unusable by keyboard, so the record is a button
-                // too. The ref guard stops the post-drag click firing a second time.
+                // Also a button: drag is unusable by keyboard. The ref guards the extra click.
                 role="button"
                 tabIndex={0}
                 aria-label={`Play ${t.title} by ${t.artist}`}
-                // motion's tap, not onClick: the drag gesture preventDefaults pointerdown,
-                // which cancels the native click that would otherwise follow.
+                // motion's tap: the drag gesture preventDefaults the native click away.
                 onTap={() => {
                   if (draggedRef.current) return;
                   land(t);
@@ -175,8 +256,7 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
                   play("hover");
                 }}
                 onDragEnd={(event) => {
-                  // Hit-test the pointer, not the dragged box — the record is bigger than the
-                  // spindle. clientX/Y, not motion's `info.point`, which is off by the scroll.
+                  // Hit-test the pointer in viewport space; `info.point` is off by the scroll.
                   const p = platterRef.current?.getBoundingClientRect();
                   const point = viewportPoint(event);
                   if (!p || !point) return;
@@ -193,8 +273,7 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
                     draggedRef.current = false;
                   }, 0);
                 }}
-                // `relative` is load-bearing: z-index (raised by whileDrag) is
-                // ignored on static elements, so the record painted under the deck.
+                // `relative` is load-bearing: z-index is ignored on static elements.
                 className="relative aspect-square cursor-grab touch-none"
                 style={{
                   filter: "drop-shadow(0 10px 18px rgba(27,29,26,0.28))",
@@ -202,8 +281,7 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
               >
                 <Record label={t.label} spinning={false} />
               </motion.div>
-              {/* Wraps rather than truncating: real titles and band names run
-                  past the 132px sleeve, and a clipped one reads as a bug. */}
+              {/* Wraps rather than truncating; a clipped title reads as a bug. */}
               <p className="mt-3 text-pretty font-display text-base leading-snug tracking-tight">
                 {t.title}
               </p>
@@ -213,124 +291,6 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* the deck */}
-      <div>
-        <div
-          className="relative border border-mirage/12 p-7"
-          style={{
-            background: "#2a2622",
-            backgroundImage:
-              "repeating-linear-gradient(94deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 7px)",
-          }}
-        >
-          <div
-            ref={platterRef}
-            onClick={toggle}
-            // Only a keyboard control once a track is loaded — otherwise a
-            // record could be started from the keyboard but never paused.
-            {...(nowPlaying?.audio
-              ? {
-                  role: "button" as const,
-                  tabIndex: 0,
-                  "aria-label": playing
-                    ? `Pause ${nowPlaying.title}`
-                    : `Play ${nowPlaying.title}`,
-                  onKeyDown: (e: React.KeyboardEvent) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      toggle();
-                    }
-                  },
-                }
-              : {})}
-            className="relative mx-auto grid aspect-square w-full max-w-[280px] cursor-pointer place-items-center rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle at 50% 50%, #4a443d 0%, #33302b 62%, #262320 100%)",
-              boxShadow: "inset 0 2px 10px rgba(0,0,0,0.5)",
-            }}
-          >
-            {nowPlaying ? (
-              <div className="h-[86%] w-[86%]">
-                <Record label={nowPlaying.label} spinning={playing} />
-              </div>
-            ) : (
-              <span className="px-6 text-center font-mono text-[10px] uppercase tracking-[0.25em] text-chalk/35">
-                Drop a record here
-              </span>
-            )}
-            {/* spindle */}
-            <span className="pointer-events-none absolute h-2 w-2 rounded-full bg-chalk/60" />
-          </div>
-
-          {/* tonearm */}
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute top-8 right-8 h-[150px] w-[10px] origin-top"
-            animate={{ rotate: playing ? -26 : -6 }}
-            transition={{ type: "spring", stiffness: 90, damping: 16 }}
-          >
-            <div className="mx-auto h-full w-[3px] rounded bg-chalk/45" />
-            <div className="absolute -top-1.5 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-chalk/50" />
-            <div className="absolute bottom-0 left-1/2 h-3 w-5 -translate-x-1/2 rounded-sm bg-chalk/60" />
-          </motion.div>
-        </div>
-
-        <div className="mt-5 min-h-[76px]">
-          {nowPlaying ? (
-            <>
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-orange">
-                {playing ? "Now playing" : "Cued"}
-              </p>
-              <p className="mt-2 font-display text-2xl tracking-tight">
-                {nowPlaying.title}
-              </p>
-              <p className="font-mono text-[11px] text-mirage/50">
-                {nowPlaying.artist}
-              </p>
-              {/* Spotify is the player only when there's no MP3. `key` remounts
-                  it per track — swapping `src` pushes iframe history entries. */}
-              {embed ? (
-                <iframe
-                  key={embed}
-                  src={embed}
-                  title={`${nowPlaying.title} by ${nowPlaying.artist} on Spotify`}
-                  height={152}
-                  loading="lazy"
-                  allow="encrypted-media; clipboard-write; picture-in-picture"
-                  className="mt-3 w-full rounded-xl border-0"
-                />
-              ) : nowPlaying.spotify ? (
-                <a
-                  href={nowPlaying.spotify}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-2 inline-block border-b border-mirage/25 font-mono text-[11px] text-mirage/55 transition-colors hover:border-orange hover:text-orange"
-                >
-                  Open in Spotify
-                </a>
-              ) : null}
-              {message && (
-                <p className="mt-2 font-mono text-[11px] text-mirage/45">
-                  {message}
-                </p>
-              )}
-            </>
-          ) : (
-            <p className="font-mono text-[11px] text-mirage/40">
-              The platter is empty.
-            </p>
-          )}
-        </div>
-
-        <audio
-          ref={audioRef}
-          onEnded={() => setPlaying(false)}
-          onPause={() => setPlaying(false)}
-          onPlay={() => setPlaying(true)}
-        />
       </div>
     </div>
   );

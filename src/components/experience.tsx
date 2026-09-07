@@ -48,8 +48,7 @@ export function Experience() {
             aria-hidden
             className="h-3 w-full"
             style={{
-              // The zigzag is the section showing *through* the torn edge, so
-              // these triangles match the section background, not the receipt.
+              // The zigzag is the section showing through the tear, so it matches that bg.
               backgroundImage:
                 "linear-gradient(135deg, var(--color-chalk) 25%, transparent 25%), linear-gradient(225deg, var(--color-chalk) 25%, transparent 25%)",
               backgroundSize: "12px 12px",
@@ -78,6 +77,8 @@ export function Experience() {
                             src={job.logo}
                             alt=""
                             fill
+                            // Fixed 20px box, so the size is known outright.
+                            sizes="20px"
                             className="object-contain"
                           />
                         </span>
@@ -114,8 +115,7 @@ export function Experience() {
             aria-hidden
             className="h-3 w-full"
             style={{
-              // Mirrored angles (45°/315°) put the chalk in the bottom corners so
-              // the tear reaches the element's bottom edge, unlike the top edge.
+              // Mirrored angles put the chalk in the bottom corners, unlike the top edge.
               backgroundImage:
                 "linear-gradient(45deg, var(--color-chalk) 25%, transparent 25%), linear-gradient(315deg, var(--color-chalk) 25%, transparent 25%)",
               backgroundSize: "12px 12px",

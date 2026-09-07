@@ -14,8 +14,7 @@ import {
 } from "@/components/interest-figures";
 import { useSound } from "@/lib/sound-context";
 
-/** Each interest renders a photographed cut-out when one exists, else its drawn
- * figure. To swap one in: add a PNG under /public/interests and set `photo`. */
+/** Renders a photo cut-out when `photo` is set, else the drawn figure. */
 type Interest = {
   fallback: ComponentType;
   photo: string | null;
@@ -73,8 +72,7 @@ const INTERESTS = {
   },
 } satisfies Record<string, Interest>;
 
-/** One cut-out inline in the sentence. The parent drives a "hover" variant that
- * scales it and cues the figure's own animation via variant propagation. */
+/** One inline cut-out; the parent's \"hover\" variant scales and cues it. */
 function Figure({ kind }: { kind: keyof typeof INTERESTS }) {
   const reduceMotion = useReducedMotion();
   const { play } = useSound();
@@ -93,8 +91,7 @@ function Figure({ kind }: { kind: keyof typeof INTERESTS }) {
       fill
       sizes="120px"
       className="object-contain"
-      // The cut-outs are transparent, so a photo needs the same drop of
-      // shadow the drawn figures get from their outlines to sit on the page.
+      // Cut-outs are transparent, so a photo needs the drawn figures' own shadow.
       style={{ filter: "drop-shadow(0 2px 3px rgba(27,29,26,0.22))" }}
     />
   ) : (
@@ -103,8 +100,7 @@ function Figure({ kind }: { kind: keyof typeof INTERESTS }) {
 
   const external = href?.startsWith("http");
 
-  // A linked object is a real anchor rather than a span with a click handler,
-  // so it keeps middle-click, cmd-click and keyboard focus for free.
+  // A real anchor, so middle-click, cmd-click and keyboard focus all work.
   const Tag = href ? motion.a : motion.span;
 
   return (
@@ -129,8 +125,7 @@ function Figure({ kind }: { kind: keyof typeof INTERESTS }) {
         hover: { scale: reduceMotion ? 1.05 : 2.5, zIndex: 40 },
       }}
       transition={{ type: "spring", stiffness: 280, damping: 18 }}
-      // align-[-0.22em] drops it onto the text baseline; the figures are square
-      // and sized in em so they track the heading's responsive font size.
+      // Sized in em and dropped to the baseline, so it tracks the heading size.
       className={`relative mx-[0.22em] inline-block h-[1.15em] w-[1.15em] align-[-0.22em] outline-none ${
         href ? "cursor-pointer" : ""
       }`}
@@ -148,8 +143,7 @@ export function Interests() {
   };
 
   return (
-    // No overflow-hidden anywhere up this tree: the figures grow past their
-    // inline box on hover and must be free to spill over the lines around them.
+    // No overflow-hidden up this tree: figures must spill over on hover.
     <section
       id="interests"
       className="relative bg-chalk px-6 py-24 text-mirage sm:px-10 sm:py-32 lg:px-16"
@@ -176,8 +170,7 @@ export function Interests() {
         <motion.p
           {...fadeUp}
           transition={{ duration: 0.55, delay: 0.12 }}
-          // Generous leading is load-bearing here — it's the room the figures
-          // grow into so an enlarged one never collides with the line above.
+          // Leading is load-bearing: it is the room an enlarged figure grows into.
           className="mt-12 font-display text-[1.6rem] leading-[1.85] tracking-tight sm:text-[2.1rem] sm:leading-[1.8]"
         >
           I listen to <Figure kind="vinyl" /> far more music than is strictly

@@ -24,16 +24,14 @@ export default function SneakersPage() {
       title="Sneakers"
       intro="Pairs collected, worn, and occasionally retired to the box they came in."
     >
-      {/* centred as a column, rather than left-hugging the wide section and
-          leaving the whole right side of the page empty */}
+      {/* Centred column: left-hugging the wide section stranded the right side. */}
       <div className="mx-auto flex max-w-xl flex-col gap-12">
         {sneakers.map((s) => (
           <article
             key={s.id}
             className="group flex flex-col items-center gap-6 sm:flex-row sm:gap-10"
           >
-            {/* Just the shoe, no frame. The shots are on white, and multiply-blending that
-                into the page's cream sits it on the page rather than in a box. */}
+            {/* Just the shoe: multiply-blending the white shot into the page's cream. */}
             <div className="relative h-24 w-40 shrink-0 sm:h-28 sm:w-48">
               {s.photo ? (
                 <Image
@@ -50,8 +48,7 @@ export default function SneakersPage() {
               )}
             </div>
 
-            {/* w-full so the block stops shrink-wrapping its longest line, which made each
-                card start at its own x. Centred on phones, left-aligned once it's a row. */}
+            {/* w-full, or each card shrink-wraps and starts at its own x. */}
             <div className="w-full text-center sm:flex-1 sm:text-left">
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-mirage/40">
                 {s.brand}

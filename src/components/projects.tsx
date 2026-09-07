@@ -6,8 +6,7 @@ import { GrainOverlay } from "@/components/grain-overlay";
 import { site } from "@/content/site";
 import { useSound } from "@/lib/sound-context";
 
-// Keyed off the data's own union rather than `string`, so a fourth colour in
-// site.ts is a type error here instead of a note with no background.
+// Keyed off the data's union, so a fourth colour is a type error here.
 const CARD_BG: Record<(typeof site.projects)[number]["color"], string> = {
   canary: "bg-canary text-mirage",
   aqua: "bg-aqua text-mirage",
@@ -16,15 +15,13 @@ const CARD_BG: Record<(typeof site.projects)[number]["color"], string> = {
 
 type Project = (typeof site.projects)[number];
 
-// The mat is 60 units wide however wide it renders, measured rather than fixed,
-// and drawn in real pixels — a stretched viewBox would flatten the arc.
+// 60 units wide at any size, in real pixels — a stretched viewBox would skew it.
 const MAT_UNITS_W = 60;
 /** Gap between the mat's edge and the ruled area, where the rulers sit. */
 const MAT_INSET = 34;
 const MAT_ARC_UNITS = 10;
 const MAT_ANGLES = [15, 30, 45, 60];
-// Kept faint on purpose: the section's heading and intro sit straight on the
-// mat rather than on a sticky note, and a stronger print fights them.
+// Faint on purpose: the heading and intro sit on the mat, not on a note.
 const MAT_GOLD = "rgba(201, 208, 120, 0.26)";
 const MAT_GOLD_TICK = "rgba(201, 208, 120, 0.34)";
 const MAT_GOLD_TEXT = "rgba(201, 208, 120, 0.48)";
@@ -198,16 +195,13 @@ function MatPrint({ width, height }: { width: number; height: number }) {
 /** Corner peel, in px: how much is turned up at rest and under the cursor. */
 const PEEL_REST = 20;
 const PEEL_HOVER = 54;
-// The cut runs along x + y = w + h - peel, so the sheet is gone once peel
-// clears w + h. Well past the largest note, which is what sells the peel.
+// The cut is x + y = w + h - peel, so the sheet clears once peel passes both.
 const PEEL_AWAY = 1000;
 /** How long the sheet takes to lift clear of the mat. */
 const PEEL_AWAY_MS = 1000;
-/** A beat after the peel lands before the tab opens, so the two don't collide.
- * Still far inside the click's 5s activation window, so no popup block. */
+/** A beat after the peel, still inside the click's activation window. */
 const OPEN_AFTER_MS = PEEL_AWAY_MS + 220;
-/** The hover ease-out spends most of its time nearly still, so on the long peel
- * it reads as a flick then a wait. This curve is paced evenly. */
+/** Evenly paced: the hover ease-out would read as a flick, then a wait. */
 const PEEL_AWAY_EASE = "cubic-bezier(0.5, 0.02, 0.35, 1)";
 
 function StickyNote({ project, index }: { project: Project; index: number }) {
@@ -216,8 +210,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
   const [peelingAway, setPeelingAway] = useState(false);
   const url = project.url;
 
-  // One number drives both the cut and the flap, so they cannot disagree. A CSS
-  // transition, not a spring: a shared easing keeps them locked frame for frame.
+  // One number drives cut and flap, so they cannot disagree mid-animation.
   const peel = peelingAway ? PEEL_AWAY : lifted ? PEEL_HOVER : PEEL_REST;
   const ease = peelingAway ? PEEL_AWAY_EASE : "cubic-bezier(0.22, 1, 0.36, 1)";
   const peelMs = peelingAway ? PEEL_AWAY_MS : 420;
@@ -225,8 +218,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
   function handleClick(event: React.MouseEvent) {
     play("sticky");
     if (!url) return;
-    // Cmd/ctrl/shift-click already open a tab or window themselves — let the
-    // browser have those rather than swallowing them for the animation.
+    // Let modifier-clicks through; they already do the right thing.
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
       return;
 
@@ -241,8 +233,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
   const note = (
     <article
       style={{
-        // Genuinely cut out rather than covered with flat colour, so the mat's grid
-        // shows through the gap — that is what sells it as paper on a surface.
+        // Genuinely cut out, so the mat shows through — that is what sells the paper.
         clipPath: `polygon(0 0, 100% 0, 100% calc(100% - ${peel}px), calc(100% - ${peel}px) 100%, 0 100%)`,
         transition: `clip-path ${peelMs}ms ${ease}`,
       }}
@@ -250,8 +241,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
     >
       <GrainOverlay opacity={0.09} />
 
-      {/* adhesive strip — the band at the top of a real pad, where the glue
-            darkens the paper slightly */}
+      {/* Adhesive strip: the band at the top of a pad where glue darkens the paper. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-16"
@@ -261,8 +251,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         }}
       />
 
-      {/* the paper's own shading: lit from the top-left, dropping off toward
-            the corner that lifts */}
+      {/* The paper's own shading, lit top-left and dropping off at the peel. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -272,10 +261,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         }}
       />
 
-      {/* The eyebrow stays mono: it reads as a printed index stamp and keeps the label
-          system consistent. Everything hand-written on the note is marker. */}
-      {/* The arrow is the only thing marking a note as clickable — without
-            it a linked note and a plain one look identical until you hover. */}
+      {/* The arrow is the only cue that a note is clickable before you hover. */}
       <p className="relative mb-5 font-mono text-[11px] uppercase tracking-widest opacity-60">
         Experiment {String(index + 1).padStart(2, "0")} — {project.type}
         {url ? <span aria-hidden> ↗</span> : null}
@@ -300,8 +286,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         {project.description}
       </p>
 
-      {/* The turned-up flap just inside the cut, showing the sheet's underside —
-          shadowed along the crease, catching light at the tip. */}
+      {/* The turned-up flap: shadowed at the crease, catching light at the tip. */}
       <div
         aria-hidden
         style={{
@@ -311,8 +296,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         }}
         className="pointer-events-none absolute bottom-0 right-0"
       >
-        {/* Folding the corner up maps it to the top-left half of the box; the other half
-            is the hole the clip-path cut. Crease is the hypotenuse, tip the free corner. */}
+        {/* The fold maps onto the box's top-left half; the clip-path cut the rest. */}
         <div
           style={{
             clipPath: "polygon(0 0, 100% 0, 0 100%)",
@@ -338,8 +322,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
         play("hover");
       }}
       onHoverEnd={() => setLifted(false)}
-      // drop-shadow, not box-shadow: box-shadow traces the element's box and would
-      // draw a square corner over the cut-away one.
+      // drop-shadow, not box-shadow, which would square off the cut corner.
       className={`relative transition-[filter] duration-300 ${
         lifted
           ? "[filter:drop-shadow(0_20px_24px_rgba(0,0,0,0.42))]"
@@ -347,8 +330,7 @@ function StickyNote({ project, index }: { project: Project; index: number }) {
       }`}
     >
       {url ? (
-        // A real anchor, so the URL previews on hover and cmd-click, middle
-        // click and keyboard all behave the way a link should.
+        // A real anchor, so hover preview, cmd-click and keyboard all behave.
         <a
           href={url}
           target="_blank"
@@ -373,14 +355,12 @@ export function Projects() {
       id="work"
       className="relative bg-chalk px-4 py-14 sm:px-8 sm:py-20 lg:px-12"
     >
-      {/* the mat itself — inset from the viewport so it reads as a physical
-          object lying on the page rather than a full-bleed background */}
+      {/* The mat, inset so it reads as an object on the page, not a background. */}
       <div
         ref={matRef}
         className="relative overflow-hidden rounded-[26px] bg-mat-green px-6 py-24 shadow-[0_30px_70px_-30px_rgba(23,51,44,0.75)] sm:rounded-[40px] sm:px-10 lg:px-16"
       >
-        {/* the printed surface: grid, four edge rulers, angle guides and the
-            protractor, all measured against the mat's real box */}
+        {/* The printed surface: grid, rulers, angle guides and protractor. */}
         <MatPrint width={matBox.width} height={matBox.height} />
         {/* worn/scuffed feel — a few faint, irregular knife-cut streaks */}
         <div
@@ -416,8 +396,7 @@ export function Projects() {
               "radial-gradient(ellipse 90% 80% at 50% 45%, transparent 55%, rgba(0,0,0,0.35) 100%)",
           }}
         />
-        {/* soft bevel — catches light on the top edge and darkens the bottom,
-          so the rounded corners read as a thick rubber mat */}
+        {/* Soft bevel, so the rounded corners read as thick rubber. */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 rounded-[26px] sm:rounded-[40px]"
@@ -445,7 +424,7 @@ export function Projects() {
             transition={{ duration: 0.5, delay: 0.05 }}
             className="font-display text-5xl tracking-tight text-chalk sm:text-6xl"
           >
-            Things on the Mat
+            The Workbench
           </motion.h2>
 
           <motion.p
@@ -453,7 +432,13 @@ export function Projects() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-4 max-w-xl text-lg leading-relaxed text-chalk/70"
+            // Only this line needs it; at 18px a printed rule cuts through the letters.
+            style={{
+              backgroundImage:
+                "radial-gradient(ellipse 58% 62% at 34% 50%, rgba(23,51,44,0.62) 0%, rgba(23,51,44,0) 74%)",
+            }}
+            // py-2 gives the gradient room; the margin gives those 8px back.
+            className="mt-1 -mb-2 max-w-xl py-2 text-lg leading-relaxed text-chalk/85"
           >
             A few things I&apos;ve cut, measured twice, and shipped.
           </motion.p>

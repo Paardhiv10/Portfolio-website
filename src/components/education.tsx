@@ -8,14 +8,12 @@ import { site } from "@/content/site";
 
 type PorEntry = (typeof site.education.por)[number];
 
-// Photos sit side by side rather than stacked — a stack buried everything
-// under the top card. The tilts are the only thing left of the pile.
+// Side by side, not stacked — a stack buried everything under the top card.
 const TILT = [-4, 2.5, -2] as const;
 /** Breathing room kept between the fan and the section's clipped edge. */
 const EDGE_GUTTER = 24;
 
-/** The photos, fanned out above whatever phrase carries them. Sized down on
- * phones so all three still fit across a narrow screen. */
+/** The photos, fanned above the phrase; sized down so three fit on a phone. */
 function PhotoFan({
   images,
   label,
@@ -23,8 +21,7 @@ function PhotoFan({
   images: readonly string[];
   label: string;
 }) {
-  // The fan hangs off a phrase that can sit far enough right to overflow the
-  // clipped section. Measure once on open and pull it back inside.
+  // A late phrase can push the fan past the clipped section; pull it back in.
   const ref = useRef<HTMLSpanElement>(null);
   const [shift, setShift] = useState(0);
 
@@ -66,26 +63,22 @@ function PhotoFan({
   );
 }
 
-/** A club/role row. The photos hang off a phrase inside the bullets, not the
- * role title, so the thing you hover is the thing they are of. */
+/** A club row: photos hang off a phrase in the summary, not the club name. */
 function PorItem({ p }: { p: PorEntry }) {
-  // Two flags, not one: with a single one a click while hovering would toggle
-  // the photos straight back off. Hover for a mouse, pin for a tap.
+  // Two flags: one would let a click while hovering toggle the photos off.
   const [hovered, setHovered] = useState(false);
   const [pinned, setPinned] = useState(false);
   const open = hovered || pinned;
 
-  /** Splits a bullet around `highlight` so the phrase can carry the photos.
-   * Falls back to the plain string when the phrase isn't in this bullet. */
-  function renderBullet(bullet: string) {
-    const at = bullet.indexOf(p.highlight);
-    if (at === -1) return bullet;
+  /** Splits the summary around `highlight`, or returns it plain if absent. */
+  function renderSummary(text: string) {
+    const at = text.indexOf(p.highlight);
+    if (at === -1) return text;
 
     return (
       <>
-        {bullet.slice(0, at)}
-        {/* A span, not a button, so the phrase still wraps with the sentence. `static`
-            below sm anchors the fan to the row, not to a wrapped inline box. */}
+        {text.slice(0, at)}
+        {/* A span so the phrase still wraps; `static` below sm anchors the fan. */}
         <span
           role="button"
           tabIndex={0}
@@ -95,8 +88,7 @@ function PorItem({ p }: { p: PorEntry }) {
           onMouseLeave={() => setHovered(false)}
           onFocus={() => setHovered(true)}
           onBlur={() => setHovered(false)}
-          // Touch fires enter then leave on a tap, so hover alone only ever
-          // flickered the photos on a phone. Tapping pins them instead.
+          // Touch fires enter then leave on a tap, so a tap pins instead of hovering.
           onClick={() => setPinned((v) => !v)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
@@ -112,37 +104,20 @@ function PorItem({ p }: { p: PorEntry }) {
             )}
           </AnimatePresence>
         </span>
-        {bullet.slice(at + p.highlight.length)}
+        {text.slice(at + p.highlight.length)}
       </>
     );
   }
 
   return (
-    <li className="relative border-b border-ink/15 pb-8 last:border-b-0 last:pb-0">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <p className="font-serif text-2xl leading-tight tracking-tight">
-          {p.role}
-        </p>
-        <p className="font-mono text-[11px] uppercase tracking-widest text-ink/45">
-          {p.dates}
-        </p>
-      </div>
-      <p className="mt-1.5 text-sm text-ink/65">{p.org}</p>
-
-      <ul className="mt-4 space-y-2">
-        {p.bullets.map((b) => (
-          <li
-            key={b}
-            className="flex gap-2.5 text-base leading-relaxed text-ink/70"
-          >
-            <span
-              aria-hidden
-              className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-ink/35"
-            />
-            <span>{renderBullet(b)}</span>
-          </li>
-        ))}
-      </ul>
+    <li className="relative">
+      <p className="font-serif text-xl leading-tight tracking-tight">{p.org}</p>
+      <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-ink/45">
+        {p.role} · {p.dates}
+      </p>
+      <p className="mt-3 text-base leading-relaxed text-ink/70">
+        {renderSummary(p.summary)}
+      </p>
     </li>
   );
 }
@@ -169,18 +144,15 @@ export function Education() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.05 }}
-          // Uncapped: the line wants 853px and the section gives 1152, so a
-          // max-width was the only thing breaking it in two. Wraps on phones.
+          // Uncapped: a max-width was the only thing breaking this line in two.
           className="font-display text-5xl leading-[0.95] tracking-tight sm:text-6xl"
         >
           I got my degree between these arches
         </motion.h2>
 
-        {/* Art left, photo and copy right. The art column is wider on purpose — the ASCII
-            grid is 140 glyphs across and needs the pixels. Single stack below lg. */}
+        {/* Art left, photo and copy right; the ASCII grid needs the wider column. */}
         <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:gap-16">
-          {/* campus, rendered as ASCII so it sits in the same visual language
-              as the hero portrait rather than as a pasted photo */}
+          {/* Campus as ASCII, so it speaks the same language as the hero portrait. */}
           <div className="@container flex w-full justify-center border-b border-ink/20 pb-12">
             <AsciiCampus />
           </div>
@@ -192,15 +164,13 @@ export function Education() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="flex flex-col justify-center border-b border-ink/20 pb-12"
           >
-            {/* No border: the stamp brings its own. drop-shadow follows the
-                scalloped edge; `contain` and the height cap keep it whole. */}
+            {/* No border — the stamp brings its own, and drop-shadow follows its scallops. */}
             <div className="relative mx-auto aspect-[952/1167] w-full max-h-[26rem] max-w-[calc(26rem*952/1167)] sm:max-h-[30rem] sm:max-w-[calc(30rem*952/1167)]">
               <Image
                 src="/education/grad-stamp.webp"
                 alt="A postage stamp of a young graduate in cap and gown, holding a rolled diploma"
                 fill
-                // Capped by max-w, so this is a known width, not a share of
-                // the viewport.
+                // Capped by max-w, so the width is a known px, not a share of the viewport.
                 sizes="(min-width: 640px) 392px, 90vw"
                 className="object-contain [filter:drop-shadow(0_10px_18px_rgba(27,29,26,0.20))]"
               />
@@ -216,8 +186,7 @@ export function Education() {
           </motion.div>
         </div>
 
-        {/* Positions of responsibility, stacked end to end. The hover photos float above
-            the row rather than needing reserved space. */}
+        {/* Positions of responsibility, stacked; the hover photos float above the row. */}
         <div className="mt-14">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -229,7 +198,7 @@ export function Education() {
               Where I Showed Up
             </p>
 
-            <ul className="mt-4 flex flex-col gap-10">
+            <ul className="mt-6 grid gap-10 sm:grid-cols-2 sm:gap-12">
               {site.education.por.map((p) => (
                 <PorItem key={p.org} p={p} />
               ))}

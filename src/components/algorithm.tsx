@@ -29,8 +29,7 @@ export function Algorithm() {
   const { play } = useSound();
   const arrowRef = useRef<HTMLDivElement>(null);
 
-  // Scroll-linked so the arrow literally draws itself as you come down
-  // the page, rather than firing once on enter.
+  // Scroll-linked, so the arrow draws itself as you come down the page.
   const { scrollYProgress } = useScroll({
     target: arrowRef,
     offset: ["start 0.9", "center 0.55"],
@@ -77,10 +76,9 @@ export function Algorithm() {
 
         <div
           ref={arrowRef}
-          className="mt-16 grid grid-cols-1 items-center gap-12 lg:grid-cols-[400px_72px_1fr] lg:gap-0"
+          className="mt-16 grid grid-cols-1 items-center gap-12 lg:grid-cols-[400px_1fr] lg:gap-x-[72px] lg:gap-y-0"
         >
-          {/* venn — no panel, but it borrows the cards' serif title, tight
-              tracking and dot ornament so it still reads as one of the family */}
+          {/* Venn: no panel, but it borrows the cards' serif and dot so it matches. */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -90,6 +88,8 @@ export function Algorithm() {
           >
             <svg
               viewBox="0 0 300 280"
+              // Lets the arrow leave the venn's box and reach into the gutter.
+              style={{ overflow: "visible" }}
               className="mx-auto w-full max-w-[400px]"
               role="img"
               aria-label="Shape the product, ship the product, and sync the people overlap to create impact"
@@ -140,34 +140,31 @@ export function Algorithm() {
               >
                 IMPACT
               </text>
+
+              {/* Marker line out of the impact dot; hidden once the cards stack. */}
+              <g className="hidden lg:block">
+                <motion.path
+                  d="M163 128 C 188 124, 208 121, 228 120 C 250 118, 264 128, 248 137 C 232 146, 224 129, 240 121 C 256 113, 288 118, 312 124 C 324 127, 332 128, 338 128"
+                  fill="none"
+                  stroke="var(--color-orange)"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ pathLength }}
+                />
+                <motion.path
+                  d="M327 120 L340 128 L327 136"
+                  fill="none"
+                  stroke="var(--color-orange)"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ opacity: headOpacity }}
+                />
+              </g>
             </svg>
 
           </motion.div>
-
-          {/* horizontal arrow into the cards (desktop) */}
-          <svg
-            viewBox="0 0 88 24"
-            className="hidden h-6 w-full lg:block"
-            aria-hidden
-          >
-            <motion.path
-              d="M2 12 H74"
-              fill="none"
-              stroke="var(--color-orange)"
-              strokeWidth="1.5"
-              strokeDasharray="5 5"
-              style={{ pathLength }}
-            />
-            <motion.path
-              d="M68 5 L79 12 L68 19"
-              fill="none"
-              stroke="var(--color-orange)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ opacity: headOpacity }}
-            />
-          </svg>
 
           {/* vertical arrow into the cards (mobile) */}
           <svg
@@ -175,19 +172,21 @@ export function Algorithm() {
             className="mx-auto h-16 w-6 lg:hidden"
             aria-hidden
           >
+            {/* Straight down the page once the cards stack; no room for the loop. */}
             <motion.path
-              d="M12 2 V58"
+              d="M12 4 V58"
               fill="none"
               stroke="var(--color-orange)"
-              strokeWidth="1.5"
-              strokeDasharray="5 5"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               style={{ pathLength }}
             />
             <motion.path
-              d="M5 52 L12 63 L19 52"
+              d="M5 50 L12 62 L19 50"
               fill="none"
               stroke="var(--color-orange)"
-              strokeWidth="1.5"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
               style={{ opacity: headOpacity }}
