@@ -101,7 +101,7 @@ function perforation(r: number, pitch: number, corner: number) {
 function CarrierFalcon() {
   return (
     <Image
-      src="/falcon_email.png"
+      src="/footer/falcon.png"
       alt="Send email"
       width={1536}
       height={1024}
@@ -165,14 +165,12 @@ function Ticket({
   label,
   handle,
   href,
-  stub,
   onHover,
   onClick,
 }: {
   label: string;
   handle: string;
   href: string;
-  stub: string;
   onHover: () => void;
   onClick: () => void;
 }) {
@@ -217,9 +215,10 @@ function Ticket({
         className="pointer-events-none absolute inset-x-0 top-[58%] border-t border-dashed border-mirage/40"
       />
 
-      <div className="relative px-1.5 pt-2.5 pb-3 text-center font-mono text-[8px] uppercase tracking-[0.15em] text-mirage/50 transition-colors group-hover:text-orange sm:px-3 sm:pt-3 sm:pb-4 sm:text-[9px] sm:tracking-[0.2em]">
-        {stub}
-      </div>
+      {/* The stub carries no text, but it still has to be tall enough to sit
+          below the 58% tear line — collapse it and the dashed line lands in
+          the middle of nothing and the ticket stops reading as one. */}
+      <div aria-hidden className="h-[34px] sm:h-[42px]" />
     </motion.a>
   );
 }
@@ -235,9 +234,9 @@ export function SiteFooter() {
   const revealMask = useMotionTemplate`radial-gradient(280px circle at ${mx}px ${my}px, #000 0%, rgba(0,0,0,0.7) 42%, transparent 72%)`;
 
   const socials = [
-    { label: "GitHub", handle: "/code", stub: "No. 01", href: site.social.github },
-    { label: "LinkedIn", handle: "/work", stub: "No. 02", href: site.social.linkedin },
-    { label: "X", handle: "/thoughts", stub: "No. 03", href: site.social.twitter },
+    { label: "GitHub", handle: "/code", href: site.social.github },
+    { label: "LinkedIn", handle: "/work", href: site.social.linkedin },
+    { label: "X", handle: "/thoughts", href: site.social.twitter },
   ];
 
   const rise = {

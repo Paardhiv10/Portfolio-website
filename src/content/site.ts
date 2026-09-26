@@ -93,12 +93,23 @@ export const site = {
       url: "https://cubecoast.com",
     },
     {
+      id: "medsetu",
+      title: "MedSetu",
+      type: "Hackathon Build",
+      description:
+        "Surgical-equipment distributors in India bleed money to manual entry, blind credit calls and stock that quietly expires. Built solo in 48 hours at VibeHack with EF: code scanning, a credit-style Hospital Reliability Score, AI expiry flags, multi-channel payment reminders and live Tally sync.",
+      color: "orange",
+      rotate: 1,
+      metric: { value: "48h", label: "solo build" },
+      url: "https://drive.google.com/file/d/1zprLFaSWllxKxXUo_xCX-RrgxAXBlb-_/view?usp=sharing",
+    },
+    {
       id: "parkspot",
       title: "ParkSpot",
       type: "Hackathon Build",
       description:
         "Browse open parking locations, reserve a slot, and get directions to your bay, with a QR check-in on arrival. I led a team of four at an inter-college hackathon run by MIT Manipal and MAHE's Innovation Centre with CII Mangalore, on parking management for academic campuses.",
-      color: "orange",
+      color: "canary",
       rotate: 1.5,
       // 1st runner-up, written as the placing so it reads at a glance.
       metric: { value: "2nd", label: "of 50+ teams" },
@@ -110,7 +121,7 @@ export const site = {
       type: "Learning Tool",
       description:
         "Learn cube algorithms and track which ones have actually stuck, puzzle by puzzle. Vibe-coded and shipped — 190+ visitors in 90 days with a high-engagement 4m 1s average session.",
-      color: "canary",
+      color: "orange",
       rotate: -1,
       metric: { value: "4m+", label: "avg. session" },
       url: "https://cubealgs.lovable.app/",
@@ -121,7 +132,7 @@ export const site = {
       type: "Browser Game",
       description:
         "A sliding-tile race in the spirit of Rubik's Race, rebuilt for the browser: fill the glowing 3×3 centre to match a scrambled target, chasing either the fewest moves or a 60-second clock.",
-      color: "orange",
+      color: "aqua",
       rotate: 1.5,
       metric: null,
       url: "https://cubeclash.thecubingcompany.com/",
@@ -133,7 +144,7 @@ export const site = {
       type: "Case Study",
       description:
         "A go-to-market read on expanding into Australia — market conditions, who they'd be up against, and the sequence I'd bet on.",
-      color: "aqua",
+      color: "orange",
       rotate: -1.5,
       metric: null,
       url: "https://drive.google.com/file/d/1FSV-mCmwBhw--xmZWWJTgKln2MAbWML7/view",
@@ -144,7 +155,7 @@ export const site = {
       type: "Case Study",
       description:
         "Pulled apart customer lifetime value to find where retention leaked, and proposed the levers most likely to move it.",
-      color: "orange",
+      color: "aqua",
       rotate: 2,
       metric: null,
       url: "https://drive.google.com/file/d/11aZ5kzmaKFTrKCxIzOLWLyBgq6-NTHGN/view",

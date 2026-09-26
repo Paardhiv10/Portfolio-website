@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Paardhiv Sarakam — Software Engineer";
+export const alt = "Paardhiv Sarakam — Product & Tech Portfolio";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -29,7 +29,7 @@ export default function Image() {
             display: "flex",
           }}
         >
-          Software Engineer
+          Product & Engineering
         </div>
         <div style={{ fontSize: 108, fontWeight: 700, display: "flex" }}>
           Paardhiv Sarakam

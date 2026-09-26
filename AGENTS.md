@@ -36,6 +36,17 @@ stat. Fill them in rather than deleting the field.
 `public/education/hult/`, `public/education/ecell/` and `public/sneakers/` are
 filled in: real photos, resized from the originals kept in `assets/source/`.
 
+## Where images live
+
+`public/` is the served bundle: everything in it is publicly downloadable by URL,
+so only referenced files belong there, each in a folder named for its section
+(`education/`, `fins/`, `footer/`, `logos/`, `sneakers/`, `audio/`). Reference
+them by absolute path — `/logos/gpi.png` — never by import.
+
+`assets/source/` holds the originals the served files were cut from, and
+`assets/unused/` holds anything no longer referenced. Neither ships, which is the
+whole point: a file parked in `public/` is still a public URL.
+
 ## The graduation stamp
 
 `public/education/grad-stamp.webp` is generated, not hand-made: the portrait in

@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AsciiCampus } from "@/components/ascii-campus";
 import { site } from "@/content/site";
 
@@ -69,6 +69,35 @@ function PorItem({ p }: { p: PorEntry }) {
   const [hovered, setHovered] = useState(false);
   const [pinned, setPinned] = useState(false);
   const open = hovered || pinned;
+  const triggerRef = useRef<HTMLSpanElement>(null);
+
+  function close() {
+    setPinned(false);
+    setHovered(false);
+  }
+
+  // A pinned fan closes on any press outside the phrase, or on Escape.
+  useEffect(() => {
+    if (!pinned) return;
+    function onPointerDown(e: PointerEvent) {
+      if (!triggerRef.current?.contains(e.target as Node)) close();
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") close();
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [pinned]);
+
+  /** Click or Enter: pin the fan open (hover alone does not), or close a pinned one. */
+  function toggle() {
+    if (pinned) close();
+    else setPinned(true);
+  }
 
   /** Splits the summary around `highlight`, or returns it plain if absent. */
   function renderSummary(text: string) {
@@ -83,17 +112,18 @@ function PorItem({ p }: { p: PorEntry }) {
           role="button"
           tabIndex={0}
           aria-expanded={open}
+          ref={triggerRef}
           className="static cursor-pointer underline decoration-ink/30 decoration-1 underline-offset-4 transition-colors hover:decoration-ink/60 sm:relative"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          onFocus={() => setHovered(true)}
-          onBlur={() => setHovered(false)}
+          // Tabbing away closes it; focus alone does not open it, or a click could not close it.
+          onBlur={close}
           // Touch fires enter then leave on a tap, so a tap pins instead of hovering.
-          onClick={() => setPinned((v) => !v)}
+          onClick={toggle}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              setPinned((v) => !v);
+              toggle();
             }
           }}
         >

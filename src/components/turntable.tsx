@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type { Track } from "@/content/collections";
 import { useSound } from "@/lib/sound-context";
@@ -56,6 +56,150 @@ function Record({ label, spinning }: { label: string; spinning: boolean }) {
       <circle cx="50" cy="50" r="19" fill={label} />
       <circle cx="50" cy="50" r="3.2" fill="#f0e8dd" />
     </motion.svg>
+  );
+}
+
+/** The deck: an empty platter until a record lands, then the arm swings over. */
+function Deck({
+  label,
+  spinning,
+}: {
+  label: string | null;
+  spinning: boolean;
+}) {
+  const reduceMotion = useReducedMotion();
+  const loaded = label !== null;
+  return (
+    <svg viewBox="0 0 140 100" className="h-full w-full" aria-hidden="true">
+      {/* plinth */}
+      <rect x="1" y="1" width="138" height="98" rx="7" fill="#e6ddcf" />
+      <rect
+        x="1"
+        y="1"
+        width="138"
+        height="98"
+        rx="7"
+        fill="none"
+        stroke="#1b1d1a"
+        strokeOpacity="0.14"
+      />
+      {/* platter and mat */}
+      <circle cx="50" cy="50" r="45" fill="#1b1d1a" fillOpacity="0.14" />
+      <circle cx="50" cy="50" r="42" fill="#2a2a28" />
+      <g fill="none" stroke="#e8ebf3" strokeOpacity="0.06" strokeWidth="0.6">
+        {[38, 30, 22].map((r) => (
+          <circle key={r} cx="50" cy="50" r={r} />
+        ))}
+      </g>
+      {!loaded && (
+        // CSS spin, not motion: motion rewrites the SVG origin and the ring drifts.
+        <circle
+          cx="50"
+          cy="50"
+          r="33"
+          fill="none"
+          stroke="#e8ebf3"
+          strokeOpacity="0.35"
+          strokeWidth="0.8"
+          strokeDasharray="3 3"
+          className="animate-[spin_24s_linear_infinite] motion-reduce:animate-none"
+          style={{ transformBox: "view-box", transformOrigin: "50px 50px" }}
+        />
+      )}
+      <AnimatePresence>
+        {loaded && (
+          <motion.g
+            key={label}
+            initial={reduceMotion ? false : { scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            style={{ transformBox: "view-box", transformOrigin: "50px 50px" }}
+          >
+            <motion.g
+              animate={
+                spinning && !reduceMotion ? { rotate: 360 } : { rotate: 0 }
+              }
+              transition={
+                spinning
+                  ? { duration: 1.8, repeat: Infinity, ease: "linear" }
+                  : { duration: 0.4 }
+              }
+              style={{ transformBox: "view-box", transformOrigin: "50px 50px" }}
+            >
+              <circle cx="50" cy="50" r="40" fill="#141414" />
+              <g
+                fill="none"
+                stroke="#e8ebf3"
+                strokeOpacity="0.13"
+                strokeWidth="0.7"
+              >
+                {[36, 32, 28, 24, 20].map((r) => (
+                  <circle key={r} cx="50" cy="50" r={r} />
+                ))}
+              </g>
+              <path
+                d="M22 30 A34 34 0 0 1 70 23"
+                fill="none"
+                stroke="#ffffff"
+                strokeOpacity="0.16"
+                strokeWidth="5"
+                strokeLinecap="round"
+              />
+              <circle cx="50" cy="50" r="15" fill={label} />
+            </motion.g>
+          </motion.g>
+        )}
+      </AnimatePresence>
+      <circle cx="50" cy="50" r="2.4" fill="#f0e8dd" />
+      {/* tonearm: parked off the platter, swung onto the grooves when loaded */}
+      <circle cx="122" cy="16" r="7" fill="#1b1d1a" fillOpacity="0.12" />
+      {/* Plain CSS: motion rewrites SVG transform-origin to the bounding-box centre. */}
+      <g
+        className="transition-transform duration-700 ease-in-out motion-reduce:transition-none"
+        style={{
+          transform: `rotate(${loaded ? 32 : 0}deg)`,
+          transformBox: "view-box",
+          transformOrigin: "122px 16px",
+        }}
+      >
+        <path
+          d="M122 16 L122 70 L117 78"
+          fill="none"
+          stroke="#8d8a84"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <rect
+          x="112"
+          y="76"
+          width="8"
+          height="5"
+          rx="1"
+          fill="#1b1d1a"
+          transform="rotate(-30 116 78.5)"
+        />
+      </g>
+      <circle
+        cx="122"
+        cy="16"
+        r="3.4"
+        fill="#f0e8dd"
+        stroke="#1b1d1a"
+        strokeOpacity="0.3"
+        strokeWidth="0.6"
+      />
+      {/* speed knob and power light */}
+      <circle cx="124" cy="86" r="4.5" fill="#1b1d1a" fillOpacity="0.12" />
+      <circle
+        cx="108"
+        cy="88"
+        r="1.6"
+        fill={spinning ? "#ff3f1a" : "#1b1d1a"}
+        fillOpacity={spinning ? 1 : 0.2}
+      />
+    </svg>
   );
 }
 
@@ -139,79 +283,89 @@ export function Turntable({ tracks }: { tracks: Track[] }) {
           ref={platterRef}
           className="sticky top-24 z-20 -mx-6 max-w-lg bg-cream px-6 pb-4 sm:-mx-10 sm:px-10 lg:static lg:mx-0 lg:px-0"
         >
-          <div className="min-h-[76px]">
-            {nowPlaying ? (
-              <>
-                <div className="flex items-center gap-4">
-                  {/* All that is left of the deck: it spins whenever audio runs. */}
-                  <div
-                    onClick={toggle}
-                    // Only a control with a local MP3 — Spotify owns its own button.
-                    {...(nowPlaying.audio
-                      ? {
-                          role: "button" as const,
-                          tabIndex: 0,
-                          "aria-label": playing
-                            ? `Pause ${nowPlaying.title}`
-                            : `Play ${nowPlaying.title}`,
-                          onKeyDown: (e: React.KeyboardEvent) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault();
-                              toggle();
-                            }
-                          },
-                        }
-                      : {})}
-                    className={`h-16 w-16 shrink-0 sm:h-20 sm:w-20 ${nowPlaying.audio ? "cursor-pointer" : ""}`}
-                  >
-                    <Record label={nowPlaying.label} spinning={playing} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-orange">
-                      {playing ? "Now playing" : "Cued"}
-                    </p>
-                    <p className="mt-1 font-display text-2xl tracking-tight">
-                      {nowPlaying.title}
-                    </p>
-                    <p className="font-mono text-[11px] text-mirage/50">
-                      {nowPlaying.artist}
-                    </p>
-                  </div>
-                </div>
-                {/* `key` remounts per track; swapping `src` pushes iframe history entries. */}
-                {embed ? (
-                  <iframe
-                    key={embed}
-                    src={embed}
-                    title={`${nowPlaying.title} by ${nowPlaying.artist} on Spotify`}
-                    height={152}
-                    loading="lazy"
-                    // Mobile blocks playback in a cross-origin frame without `autoplay`.
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    className="mt-3 w-full rounded-xl border-0"
-                  />
-                ) : nowPlaying.spotify ? (
-                  <a
-                    href={nowPlaying.spotify}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-2 inline-block border-b border-mirage/25 font-mono text-[11px] text-mirage/55 transition-colors hover:border-orange hover:text-orange"
-                  >
-                    Open in Spotify
-                  </a>
-                ) : null}
-                {message && (
-                  <p className="mt-2 font-mono text-[11px] text-mirage/45">
-                    {message}
+          <div className="flex items-center gap-5">
+            {/* The deck itself: tap to pause/resume when there is a local MP3. */}
+            <div
+              onClick={toggle}
+              // Only a control with a local MP3 — Spotify owns its own button.
+              {...(nowPlaying?.audio
+                ? {
+                    role: "button" as const,
+                    tabIndex: 0,
+                    "aria-label": playing
+                      ? `Pause ${nowPlaying.title}`
+                      : `Play ${nowPlaying.title}`,
+                    onKeyDown: (e: React.KeyboardEvent) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        toggle();
+                      }
+                    },
+                  }
+                : {})}
+              className={`aspect-[7/5] w-32 shrink-0 drop-shadow-[0_8px_14px_rgba(27,29,26,0.18)] sm:w-44 ${nowPlaying?.audio ? "cursor-pointer" : ""}`}
+            >
+              <Deck label={nowPlaying?.label ?? null} spinning={playing} />
+            </div>
+            <div className="min-w-0">
+              {nowPlaying ? (
+                <>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-orange">
+                    {playing ? "Now playing" : "Cued"}
                   </p>
-                )}
-              </>
-            ) : (
-              <p className="font-mono text-[11px] text-mirage/40">
-                The platter is empty.
-              </p>
-            )}
+                  <p className="mt-1 font-display text-2xl tracking-tight">
+                    {nowPlaying.title}
+                  </p>
+                  <p className="font-mono text-[11px] text-mirage/50">
+                    {nowPlaying.artist}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-mirage/40">
+                    Deck idle
+                  </p>
+                  <p className="mt-1 font-display text-2xl tracking-tight text-mirage/70">
+                    Pick a record
+                  </p>
+                  <p className="font-mono text-[11px] text-mirage/45">
+                    Anything from the crate below will do.
+                  </p>
+                </>
+              )}
+            </div>
           </div>
+          {nowPlaying && (
+            <>
+              {/* `key` remounts per track; swapping `src` pushes iframe history entries. */}
+              {embed ? (
+                <iframe
+                  key={embed}
+                  src={embed}
+                  title={`${nowPlaying.title} by ${nowPlaying.artist} on Spotify`}
+                  height={152}
+                  loading="lazy"
+                  // Mobile blocks playback in a cross-origin frame without `autoplay`.
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  className="mt-4 w-full rounded-xl border-0"
+                />
+              ) : nowPlaying.spotify ? (
+                <a
+                  href={nowPlaying.spotify}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 inline-block border-b border-mirage/25 font-mono text-[11px] text-mirage/55 transition-colors hover:border-orange hover:text-orange"
+                >
+                  Open in Spotify
+                </a>
+              ) : null}
+              {message && (
+                <p className="mt-2 font-mono text-[11px] text-mirage/45">
+                  {message}
+                </p>
+              )}
+            </>
+          )}
         </div>
 
         <audio

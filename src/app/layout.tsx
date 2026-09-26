@@ -32,20 +32,20 @@ const shantell = Shantell_Sans({
 });
 
 const DESCRIPTION =
-  "Software engineer and product builder. Ex-YC-backed and early-stage startups. Speedcuber. Building things that work and reading well.";
+  "The portfolio of Paardhiv Sarakam: products and case studies, a Chrome extension for cubers, a speedcubing platform, plus notes on building and shipping.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://paardhiv.com"),
   // Gives every child page a consistent suffix, so each declares only its name.
   title: {
-    default: "Paardhiv Sarakam — Software Engineer",
+    default: "Paardhiv Sarakam — Product & Tech Portfolio",
     template: "%s — Paardhiv Sarakam",
   },
   description: DESCRIPTION,
   // Prevents query strings or alternate hosts from indexing as duplicate pages.
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Paardhiv Sarakam — Software Engineer",
+    title: "Paardhiv Sarakam — Product & Tech Portfolio",
     description: DESCRIPTION,
     type: "website",
     url: "/",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Paardhiv Sarakam — Software Engineer",
+    title: "Paardhiv Sarakam — Product & Tech Portfolio",
     description: DESCRIPTION,
     creator: "@PaardhivS",
   },
